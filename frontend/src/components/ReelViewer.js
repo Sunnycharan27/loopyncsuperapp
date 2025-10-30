@@ -84,6 +84,11 @@ const ReelViewer = ({ reels, currentUser, onLike }) => {
   const isBookmarked = bookmarked[currentReel.id];
 
   const handleBookmark = async () => {
+    if (!currentUser) {
+      // Redirect to login if not authenticated
+      window.location.href = '/auth';
+      return;
+    }
     try {
       await axios.post(`${API}/posts/${currentReel.id}/bookmark?userId=${currentUser.id}`);
       setBookmarked(prev => ({ ...prev, [currentReel.id]: !prev[currentReel.id] }));
@@ -95,6 +100,11 @@ const ReelViewer = ({ reels, currentUser, onLike }) => {
   const handleDoubleTap = (e) => {
     // Double tap to like
     if (e.detail === 2 && !isLiked) {
+      if (!currentUser) {
+        // Redirect to login if not authenticated
+        window.location.href = '/auth';
+        return;
+      }
       onLike(currentReel.id);
       // Show heart animation
       const heart = document.createElement('div');
