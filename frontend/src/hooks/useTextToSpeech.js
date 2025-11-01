@@ -27,23 +27,44 @@ export const useTextToSpeech = () => {
   }, [selectedVoice]);
 
   const speak = useCallback((text) => {
+    if (!text || text.trim().length === 0) {
+      console.warn('No text provided to speak');
+      return;
+    }
+
     const synth = window.speechSynthesis;
+    
+    if (!synth) {
+      console.error('Speech synthesis not supported');
+      return;
+    }
     
     // Cancel any ongoing speech
     synth.cancel();
+    
+    console.log('Starting to speak:', text.substring(0, 50) + '...');
     
     const utterance = new SpeechSynthesisUtterance(text);
     
     if (selectedVoice) {
       utterance.voice = selectedVoice;
+      console.log('Using voice:', selectedVoice.name);
     }
     
     utterance.pitch = 1;
-    utterance.rate = 1;
+    utterance.rate = 0.95; // Slightly slower for clarity
     utterance.volume = 1;
 
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
+    utterance.onstart = () => {
+      console.log('Speech started');
+      setIsSpeaking(true);
+    };
+    
+    utterance.onend = () => {
+      console.log('Speech ended');
+      setIsSpeaking(false);
+    };
+    
     utterance.onerror = (event) => {
       console.error('Speech synthesis error:', event.error);
       setIsSpeaking(false);
