@@ -559,10 +559,11 @@ class ComprehensiveAuthSocialTester:
             return False
         
         try:
-            # Test 1: Get DM threads
-            print("   Getting DM threads...")
+            # Test 1: Get DM threads (using messages endpoint)
+            print("   Getting messages...")
             threads_response = self.session.get(
-                f"{BACKEND_URL}/messages/threads",
+                f"{BACKEND_URL}/messages",
+                params={"userId": self.demo_user_data.get("id")},
                 headers={
                     "Authorization": f"Bearer {self.demo_auth_token}",
                     "Content-Type": "application/json"
