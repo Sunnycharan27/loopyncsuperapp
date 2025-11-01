@@ -108,8 +108,8 @@ const SearchPage = () => {
                   {results.posts.map(post => (
                     <div key={post.id} className="glass-card p-4 dark:bg-gray-800/30 light:bg-white">
                       <div className="flex items-center gap-2 mb-2">
-                        <img src={post.author?.avatar} alt={post.author?.name} className="w-8 h-8 rounded-full" />
-                        <span className="font-semibold text-white dark:text-white light:text-black">{post.author?.name}</span>
+                        <img src={post.author?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${post.authorId}`} alt={post.author?.name || 'User'} className="w-8 h-8 rounded-full" />
+                        <span className="font-semibold text-white dark:text-white light:text-black">{post.author?.name || 'Anonymous User'}</span>
                       </div>
                       <p className="text-gray-300 dark:text-gray-300 light:text-gray-700">{post.text}</p>
                     </div>
