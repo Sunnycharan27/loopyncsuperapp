@@ -300,17 +300,40 @@ const MessengerNew = () => {
   };
 
   const initiateCall = async (callType) => {
-    if (!selectedThread) return;
+    if (!selectedThread) {
+      toast.error('No conversation selected');
+      return;
+    }
+    
+    if (!currentUser?.id) {
+      toast.error('Please login to make calls');
+      navigate('/auth');
+      return;
+    }
 
     try {
-      await axios.post(`${API}/calls/initiate`, {
+      const token = localStorage.getItem('loopync_token');
+      const response = await axios.post(`${API}/calls/initiate`, {
         callerId: currentUser.id,
         recipientId: selectedThread.otherUser.id,
         callType
+      }, {
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
       });
+      
+      // Call initiated successfully
+      console.log('Call initiated:', response.data);
+      toast.success(`${callType === 'video' ? 'Video' : 'Audio'} call initiated`);
+      
     } catch (error) {
       console.error('Error initiating call:', error);
-      toast.error('Failed to initiate call');
+      const errorMsg = error.response?.data?.detail || error.message || 'Failed to initiate call';
+      toast.error(errorMsg);
+      
+      // Log detailed error for debugging
+      if (error.response) {
+        console.error('Error response:', error.response.status, error.response.data);
+      }
     }
   };
 
