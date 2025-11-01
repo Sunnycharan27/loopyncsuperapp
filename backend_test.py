@@ -28,27 +28,25 @@ TEST_PASSWORD = "password123"
 class VoiceBotTester:
     def __init__(self):
         self.session = requests.Session()
-        self.user_id = None
-        self.jwt_token = None
-        self.initial_balance = 0.0
+        self.auth_token = None
         self.test_results = []
         
-    def log_test(self, test_name, success, details="", error=""):
+    def log_test(self, test_name, success, details, response_data=None):
         """Log test results"""
-        status = "✅ PASS" if success else "❌ FAIL"
         result = {
             "test": test_name,
-            "status": status,
             "success": success,
             "details": details,
-            "error": error
+            "timestamp": datetime.now().isoformat(),
+            "response_data": response_data
         }
         self.test_results.append(result)
-        print(f"{status}: {test_name}")
-        if details:
-            print(f"   Details: {details}")
-        if error:
-            print(f"   Error: {error}")
+        
+        status = "✅ PASS" if success else "❌ FAIL"
+        print(f"{status} {test_name}")
+        print(f"   Details: {details}")
+        if response_data:
+            print(f"   Response: {json.dumps(response_data, indent=2)}")
         print()
         
     def test_1_login_demo_user(self):
