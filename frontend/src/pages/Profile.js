@@ -321,7 +321,7 @@ const Profile = () => {
                   <div className="flex items-start gap-3">
                     <img
                       src={post.author?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${post.authorId}`}
-                      alt={post.author?.name}
+                      alt={post.author?.name || 'User'}
                       className="w-10 h-10 rounded-full"
                     />
                     <div className="flex-1">
