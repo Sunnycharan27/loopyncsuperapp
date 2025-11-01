@@ -9,7 +9,7 @@ import json
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://loopconnect-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
 
 class DMRegressionTester:
     def __init__(self):

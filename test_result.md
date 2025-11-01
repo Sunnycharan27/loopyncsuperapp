@@ -152,7 +152,7 @@ backend:
           COMPREHENSIVE INSTAGRAM-STYLE FEATURES TESTING COMPLETED - ALL CORE FEATURES WORKING (6/6 TESTS PASSED)
           
           🎯 **TESTING SCOPE**: Complete Instagram-style social media features testing
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USER**: demo@loopync.com / password123
           **TEST DATE**: October 28, 2025
           
@@ -249,7 +249,7 @@ backend:
           COMPREHENSIVE TWITTER-STYLE FEATURES TESTING COMPLETED - CRITICAL BACKEND BUGS IDENTIFIED (4/6 TESTS PASSED - 66.7% SUCCESS)
           
           🎯 **TESTING SCOPE**: Complete Twitter-style social media features testing
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USER**: demo@loopync.com / password123
           **TEST DATE**: October 28, 2025
           
@@ -328,7 +328,7 @@ backend:
           FOCUSED BACKEND TESTING: Quote Posts and Reply Posts (Twitter Features) COMPLETED - ALL TESTS PASSED (8/8 - 100% SUCCESS)
           
           🎯 **TESTING SCOPE**: Retest only the quote and reply features after Post model fix
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USER**: demo@loopync.com / password123
           **TEST DATE**: October 28, 2025
           
@@ -680,7 +680,7 @@ frontend:
           FRONTEND INVESTOR DEMO TEST COMPLETED - CRITICAL AUTHENTICATION AND ONBOARDING ISSUES IDENTIFIED (2/10 TESTS PASSED - 20% SUCCESS)
           
           🎯 **REVIEW REQUEST ADDRESSED**: INVESTOR DEMO - COMPLETE FRONTEND TEST (All Features Real-time)
-          **FRONTEND URL**: https://loopconnect-1.preview.emergentagent.com
+          **FRONTEND URL**: https://socialverse-62.preview.emergentagent.com
           **TEST DATE**: October 28, 2025
           **TESTING SCOPE**: Complete user journey verification for investor demonstration
           **TEST CREDENTIALS**: demo@loopync.com / password123, john@loopync.com / password123, sarah@loopync.com / password123
@@ -786,7 +786,7 @@ frontend:
           COMPREHENSIVE FRONTEND UI TESTING COMPLETED - AUTHENTICATION FIXED, MIXED RESULTS ON FEATURES (4/10 TESTS PASSED - 40% SUCCESS)
           
           🎯 **REVIEW REQUEST ADDRESSED**: COMPREHENSIVE FRONTEND UI TESTING - All Features with Playwright
-          **APPLICATION URL**: https://loopconnect-1.preview.emergentagent.com
+          **APPLICATION URL**: https://socialverse-62.preview.emergentagent.com
           **TEST CREDENTIALS**: demo@loopync.com / password123
           **VIEWPORT**: Mobile (393x852) - Primary target device
           **TEST DATE**: October 28, 2025
@@ -797,7 +797,7 @@ frontend:
           - ✅ Login form accessible and functional
           - ✅ Demo credentials (demo@loopync.com / password123) accepted successfully
           - ✅ JWT token generated and stored correctly
-          - ✅ Successfully reached home timeline (URL: https://loopconnect-1.preview.emergentagent.com/)
+          - ✅ Successfully reached home timeline (URL: https://socialverse-62.preview.emergentagent.com/)
           - ✅ No onboarding loop issues encountered
           - ✅ Session management working properly
           - ✅ Main application accessible after login
@@ -1129,7 +1129,7 @@ frontend:
           
           🎯 **REVIEW REQUEST ADDRESSED**: Debug and Fix Friend Request Acceptance for Real Users
           **ISSUE**: Friend request acceptance failing for real user IDs - need to debug complete flow with actual user accounts
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST DATE**: October 28, 2024
           **INVESTIGATION SEQUENCE**: Followed exact 8-step sequence as requested
           
@@ -1220,7 +1220,7 @@ frontend:
           FRIEND REQUEST SYSTEM WITH PERMANENT FRIENDSHIPS COMPREHENSIVE TEST COMPLETED - ALL SUCCESS CRITERIA MET (10/10 TESTS PASSED)
           
           🎯 **TESTING SCOPE**: Complete friend request system with permanent friendships as specified in review request
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST SEQUENCE**: Login → Create User → Clear Requests → Send Request → Accept → Verify Bidirectional → Persistence → Status API → Call Test
           **TESTING DATE**: October 27, 2025
           
@@ -1343,7 +1343,7 @@ frontend:
       COMPLETE MESSENGER BACKEND API TESTING COMPLETED - COMPREHENSIVE ANALYSIS (7/8 TESTS PASSED)
       
       🎯 **TESTING SCOPE**: Complete Messenger Backend Functionality as requested
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST USER**: demo_user
       
       ✅ **SUCCESSFUL API ENDPOINTS**:
@@ -1402,7 +1402,7 @@ frontend:
       
       🎯 **TESTING SCOPE**: Complete friend request and messaging system for demo user
       **ISSUE REPORTED**: "You can only call friends" error in Messenger - demo user has no friends
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 27, 2025
       
       🔍 **ROOT CAUSE IDENTIFIED**:
@@ -1493,7 +1493,7 @@ frontend:
       
       🎯 **REVIEW REQUEST ADDRESSED**: COMPREHENSIVE FULL-STACK FUNCTIONALITY TEST - All Features
       **OBJECTIVE**: Test all major features of Loopync to ensure full functionality
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST USER**: demo@loopync.com / password123
       **TEST DATE**: October 28, 2025
       **TESTING SCOPE**: Complete backend functionality verification for investor demonstration
@@ -1645,7 +1645,7 @@ frontend:
       
       🎯 **REVIEW REQUEST ADDRESSED**: Fix User Database Issue for Calling Functionality
       **ISSUE REPORTED**: "Failed to start call" error because currentUser.id doesn't exist in MongoDB users collection
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST DATE**: December 13, 2024
       **INVESTIGATION SCOPE**: Complete 8-step investigation and fix sequence as requested
       
@@ -1746,7 +1746,7 @@ frontend:
       DM THREADS FOR DEMO USER TO TEST CALLING - COMPREHENSIVE TESTING COMPLETED (7/7 TESTS PASSED - 100% SUCCESS)
       
       🎯 **REVIEW REQUEST**: Create DM Threads for Demo User to Test Calling
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST DATE**: December 13, 2024
       **TESTING SCOPE**: Complete end-to-end DM thread creation and calling functionality verification
       
@@ -1817,7 +1817,7 @@ frontend:
       COMPREHENSIVE INVESTOR DEMO TEST COMPLETED - ALL FEATURES REAL-TIME (31/36 TESTS PASSED - 86.1% SUCCESS)
       
       🎯 **REVIEW REQUEST ADDRESSED**: Comprehensive Investor Demo Test - All Features Real-Time
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST DATE**: December 13, 2024
       **TESTING SCOPE**: Complete 10-feature test suite for investor demonstration with real user accounts
       **TEST USERS**: demo@loopync.com, john@loopync.com, sarah@loopync.com (all with password123)
@@ -1911,7 +1911,7 @@ frontend:
       FRONTEND INVESTOR DEMO TEST COMPLETED - CRITICAL AUTHENTICATION AND ONBOARDING ISSUES IDENTIFIED (2/10 TESTS PASSED - 20% SUCCESS)
       
       🎯 **REVIEW REQUEST ADDRESSED**: INVESTOR DEMO - COMPLETE FRONTEND TEST (All Features Real-time)
-      **FRONTEND URL**: https://loopconnect-1.preview.emergentagent.com
+      **FRONTEND URL**: https://socialverse-62.preview.emergentagent.com
       **TEST DATE**: October 28, 2025
       **TESTING SCOPE**: Complete user journey verification for investor demonstration
       **TEST CREDENTIALS**: demo@loopync.com / password123, john@loopync.com / password123, sarah@loopync.com / password123
@@ -2018,7 +2018,7 @@ frontend:
       
       🎯 **REVIEW REQUEST ADDRESSED**: Make Calling Work with Real Users - @Sunnycharan and Ram Charan
       **ISSUE**: Backend tests passed with demo@loopync.com and seeded users, but real users (@Sunnycharan trying to call Ram Charan) were failing
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 27, 2025
       **SOLUTION**: Verified calling functionality works perfectly with actual real user data
       
@@ -2244,7 +2244,7 @@ frontend:
           COMPLETE USER ONBOARDING AND LOGIN FLOW TESTING COMPLETED - ALL CORE FLOWS WORKING (6/7 TESTS PASSED)
           
           🎯 **TESTING SCOPE**: Complete user authentication and onboarding flow as requested
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TESTING DATE**: October 27, 2025
           **VIEWPORTS TESTED**: Desktop (1920x1080) and Mobile (390x844)
           
@@ -2363,7 +2363,7 @@ frontend:
           
           🎯 **ISSUE RESOLVED**: "Failed to start call" error because currentUser.id doesn't exist in MongoDB users collection
           **ROOT CAUSE**: User database consistency issue has been resolved
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST DATE**: December 13, 2024
           
           ✅ **ALL INVESTIGATION STEPS COMPLETED**:
@@ -2399,7 +2399,7 @@ frontend:
           COMPLETE FRIEND-TO-CALL FLOW TESTING COMPLETED - ALL SUCCESS CRITERIA MET (8/8 TESTS PASSED)
           
           🎯 **TESTING SCOPE**: Complete friend request to call initiation flow as specified in review request
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TESTING DATE**: October 27, 2025
           **TEST SEQUENCE**: Login Demo → Create User → Send Request → Accept → Verify Arrays → Call Friends → Reject Non-Friends → Persistence
           
@@ -2489,7 +2489,7 @@ frontend:
           AGORA.IO VIDEO/AUDIO CALLING INTEGRATION TESTING COMPLETED - ALL TESTS PASSED (6/6 SUCCESS)
           
           🎯 **TESTING SCOPE**: Complete Agora.io calling integration as requested
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USERS**: demo_user (e4ad7f6a-74c9-4417-84e3-9081261efb8b) ↔ u1 (friends)
           
           ✅ **COMPREHENSIVE TESTING RESULTS**:
@@ -2519,7 +2519,7 @@ frontend:
           QUICK TEST: VIDEO/AUDIO CALL INITIATION AFTER DUPLICATE ENDPOINT REMOVAL - ALL SUCCESS CRITERIA MET (5/5 TESTS PASSED)
           
           🎯 **TESTING SCOPE**: Verify working endpoint after duplicate /api/calls/initiate endpoint removal
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST DATE**: December 13, 2024
           **DEMO USER**: demo@loopync.com / password123
           
@@ -2620,7 +2620,7 @@ frontend:
       COMPLETE FRIEND-TO-CALL FLOW TESTING COMPLETED - ALL SUCCESS CRITERIA MET (8/8 TESTS PASSED)
       
       🎯 **TESTING SCOPE**: Complete friend request to call initiation flow as specified in review request
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 27, 2025
       **TEST SEQUENCE**: Login Demo → Create User → Send Request → Accept → Verify Arrays → Call Friends → Reject Non-Friends → Persistence
       
@@ -3070,7 +3070,7 @@ frontend:
           
           🎯 **TESTING SCOPE**: Complete end-to-end WhatsApp-like video/audio calling functionality
           **ISSUE IDENTIFIED & RESOLVED**: API URL bug causing 404 errors on call initiation
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TESTING DATE**: October 28, 2025
           
           ✅ **COMPREHENSIVE TEST RESULTS**:
@@ -3456,7 +3456,7 @@ backend:
           FRIENDS SYSTEM AND CALLING BACKEND INTEGRATION TESTING COMPLETED - ALL SUCCESS CRITERIA MET (13/13 TESTS PASSED - 100% SUCCESS RATE)
           
           🎯 **COMPREHENSIVE TESTING RESULTS**:
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USERS**: Created testuser1_caller and testuser2_receiver with unique IDs
           
           ✅ **TEST 1: Create Two Test Users**:
@@ -3795,7 +3795,7 @@ agent_communication:
       COMPLETE FRIEND REQUEST FLOW WITH CURRENT FRONTEND IMPLEMENTATION - COMPREHENSIVE TEST COMPLETED (7/7 TESTS PASSED - 100% SUCCESS)
       
       🎯 **REVIEW REQUEST COMPLETED**: Test Complete Friend Request Flow with Current Frontend Implementation
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST DATE**: October 27, 2025
       **TESTING METHODOLOGY**: End-to-end testing using EXACT frontend endpoints and parameters
       
@@ -6528,7 +6528,7 @@ backend:
           - Successfully retrieved uploaded file using returned URL path
           - Correct HTTP 200 response with proper content-type headers
           - File served correctly through ingress routing
-          - Full URL construction working: https://loopconnect-1.preview.emergentagent.com/api/uploads/{filename}
+          - Full URL construction working: https://socialverse-62.preview.emergentagent.com/api/uploads/{filename}
           
           Static file upload and retrieval system is fully functional.
 
@@ -6685,7 +6685,7 @@ backend:
           DEMO USER AUTO-FRIENDING FEATURE TESTING COMPLETED - ALL SUCCESS CRITERIA MET (8/8 TESTS PASSED - 100% SUCCESS RATE)
           
           🎯 **COMPREHENSIVE AUTO-FRIENDING LOGIC VERIFICATION**:
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **DEMO USER**: demo@loopync.com / password123
           **TEST FOCUS**: Auto-friending logic during demo user login
           
@@ -7174,7 +7174,7 @@ backend:
           VENUES UPDATE BACKEND TESTING COMPLETED - ALL CRITICAL REQUIREMENTS MET (5/7 TESTS PASSED - 71.4% SUCCESS)
           
           🎯 **REVIEW REQUEST ADDRESSED**: Verify Venues Update - Temples with Timings and More Information Button
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST DATE**: December 13, 2024
           **TESTING SCOPE**: Complete venue data structure verification for proper categorization and timing information
           
@@ -7563,7 +7563,7 @@ backend:
           COMPREHENSIVE EVENTS AND TICKETING SYSTEM TEST COMPLETED - QR CODE VERIFICATION (11/11 TESTS PASSED - 100% SUCCESS)
           
           🎯 **TESTING SCOPE**: Complete event booking flow with QR code generation as specified in review request
-          **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+          **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
           **TEST USER**: demo@loopync.com / password123
           **TEST DATE**: October 28, 2025
           
@@ -7673,7 +7673,7 @@ agent_communication:
       
       🎯 COMPREHENSIVE AUTHENTICATION UI TESTING RESULTS:
       **TASK**: Verify authentication UI changes on auth page
-      **FRONTEND URL**: https://loopconnect-1.preview.emergentagent.com/auth
+      **FRONTEND URL**: https://socialverse-62.preview.emergentagent.com/auth
       
       ✅ **TEST 1: LOGIN PAGE VERIFICATION (DEFAULT VIEW)** - 100% PASSED
       - ✅ "Loopync" logo visible and properly displayed
@@ -7757,7 +7757,7 @@ agent_communication:
       COMPLETE FRIEND-TO-CALL FLOW TESTING COMPLETED - ALL SUCCESS CRITERIA MET (8/8 TESTS PASSED)
       
       🎯 **TESTING SCOPE**: Complete friend request to call initiation flow as specified in review request
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 27, 2025
       **TEST SEQUENCE**: Login Demo → Create User → Send Request → Accept → Verify Arrays → Call Friends → Reject Non-Friends → Persistence
       
@@ -8233,7 +8233,7 @@ agent_communication:
       
       🎯 **CRITICAL FEATURE VERIFICATION COMPLETED**:
       **ISSUE TESTED**: Demo user auto-friending logic during login
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **DEMO USER**: demo@loopync.com / password123
       
       ✅ **ALL REQUESTED TEST SCENARIOS COMPLETED SUCCESSFULLY**:
@@ -8760,7 +8760,7 @@ backend:
       FRIEND REQUEST SYSTEM WITH PERMANENT FRIENDSHIPS COMPREHENSIVE TESTING COMPLETED - ALL SUCCESS CRITERIA MET (10/10 TESTS PASSED)
       
       🎯 **TESTING SCOPE**: Complete friend request system with permanent friendships as specified in review request
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST SEQUENCE**: Login → Create User → Clear Requests → Send Request → Accept → Verify Bidirectional → Persistence → Status API → Call Test
       **TESTING DATE**: October 27, 2025
       
@@ -8817,7 +8817,7 @@ backend:
       COMPLETE VIDEO/AUDIO CALLING WITH REAL USER ACCOUNTS TESTING COMPLETED - ALL SUCCESS CRITERIA MET (7/7 TESTS PASSED - 100% SUCCESS)
       
       🎯 **REVIEW REQUEST ADDRESSED**: Test Complete Video/Audio Calling with Real User Accounts
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: December 13, 2024
       **REAL USER IDS**: @Sunnycharan (9b76bda7-ca16-4c33-9bc0-66d1b5ca86d0), @Sunnyram (b1a68570-99a3-49fa-8309-347cbe3499df)
       **AGORA CREDENTIALS**: App ID: 9d727260580f40d2ae8c131dbfd8ba08, App Certificate: 59fd8e967f754664b3aa994c9b356e12
@@ -8899,7 +8899,7 @@ backend:
       FIXED FEATURES COMPREHENSIVE TESTING COMPLETED - ALL SUCCESS CRITERIA MET (11/11 TESTS PASSED - 100% SUCCESS)
       
       🎯 **REVIEW REQUEST ADDRESSED**: Test All Fixed Features - Comprehensive Verification
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: December 13, 2024
       **TESTING SCOPE**: Complete verification of 4 major fixed features as requested
       
@@ -8958,7 +8958,7 @@ backend:
       
       🎯 **TESTING SCOPE**: Complete WhatsApp-like video/audio calling system as specified in review request
       **CRITICAL ISSUE IDENTIFIED & RESOLVED**: API URL bug causing 404 errors on call initiation
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 28, 2025
       
       🔧 **CRITICAL BUG FIXED**:
@@ -9039,7 +9039,7 @@ backend:
       COMPREHENSIVE APPLICATION CHECK COMPLETED - ALL FEATURES AUDIT (77.4% SUCCESS RATE)
       
       🎯 **TESTING SCOPE**: Complete backend API testing for all social media features as requested
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TESTING DATE**: October 28, 2024
       **TOTAL TESTS**: 31 comprehensive feature tests
       
@@ -9233,7 +9233,7 @@ agent_communication:
       COMPREHENSIVE SOCIAL MEDIA BACKEND TESTING COMPLETED - MIXED RESULTS WITH CRITICAL BUGS IDENTIFIED (15/19 TESTS PASSED - 78.9% SUCCESS)
       
       🎯 **TESTING SCOPE**: Complete Instagram/Twitter-style social media features testing as requested
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST USER**: demo@loopync.com / password123
       **TEST DATE**: October 28, 2025
       **TESTS PERFORMED**: 19 comprehensive tests across all new social media endpoints
@@ -9363,7 +9363,7 @@ agent_communication:
       COMPREHENSIVE EVENTS AND TICKETING SYSTEM TEST COMPLETED - QR CODE VERIFICATION (11/11 TESTS PASSED - 100% SUCCESS)
       
       🎯 **TESTING SCOPE**: Complete event booking flow with QR code generation as specified in review request
-      **BACKEND URL**: https://loopconnect-1.preview.emergentagent.com/api
+      **BACKEND URL**: https://socialverse-62.preview.emergentagent.com/api
       **TEST USER**: demo@loopync.com / password123
       **TEST DATE**: October 28, 2025
       

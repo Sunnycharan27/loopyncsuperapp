@@ -12,7 +12,7 @@ from datetime import datetime
 import time
 
 # Configuration
-BACKEND_URL = "https://loopconnect-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
 
 # Test user credentials as specified in the review request
 TEST_USERS = {

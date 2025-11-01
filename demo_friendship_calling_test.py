@@ -22,7 +22,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://loopconnect-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
 DEMO_EMAIL = "demo@loopync.com"
 DEMO_PASSWORD = "password123"
 

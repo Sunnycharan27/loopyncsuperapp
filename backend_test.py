@@ -4,7 +4,7 @@ COMPREHENSIVE EVENTS AND TICKETING SYSTEM TEST - QR CODE VERIFICATION
 
 Testing complete event booking flow with QR code generation as specified in review request.
 
-Backend URL: https://loopconnect-1.preview.emergentagent.com/api
+Backend URL: https://socialverse-62.preview.emergentagent.com/api
 Test User: demo@loopync.com / password123
 """
 
@@ -16,7 +16,7 @@ import base64
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://loopconnect-1.preview.emergentagent.com/api"
+BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
