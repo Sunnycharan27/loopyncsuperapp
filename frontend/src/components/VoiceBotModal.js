@@ -90,6 +90,30 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
     }
   }, [sessionId, resetTranscript, speak]);
 
+  // Add welcome message when modal opens
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      const welcomeMessage = {
+        role: 'assistant',
+        content: "Hi! I'm your AI voice assistant. Click the microphone button and ask me anything!",
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+      
+      // Speak welcome message
+      setTimeout(() => {
+        speak("Hi! I'm your AI voice assistant. Click the microphone button and ask me anything!");
+      }, 500);
+    }
+  }, [isOpen, messages.length, speak]);
+
+  // Send query when transcript is ready
+  useEffect(() => {
+    if (transcript && !isListening) {
+      sendQuery(transcript);
+    }
+  }, [transcript, isListening, sendQuery]);
+
   const handleVoiceInput = useCallback(() => {
     if (isListening) {
       stopListening();
