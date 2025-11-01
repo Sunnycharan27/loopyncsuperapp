@@ -6259,17 +6259,22 @@ async def add_product_review(productId: str, userId: str, rating: int, comment: 
 
 # ===== VIDEO/VOICE CALLS (1-on-1) =====
 
+class CallInitiateRequest(BaseModel):
+    callerId: str
+    recipientId: str
+    callType: str = "video"
+
 @api_router.post("/calls/initiate")
-async def initiate_call(callerId: str, recipientId: str, callType: str = "video"):
+async def initiate_call(req: CallInitiateRequest):
     """Initiate 1-on-1 call with Agora"""
     from agora_token_builder import RtcTokenBuilder
     
     # Check if users are friends before initiating call
-    caller = await db.users.find_one({"id": callerId}, {"_id": 0, "friends": 1})
+    caller = await db.users.find_one({"id": req.callerId}, {"_id": 0, "friends": 1})
     if not caller:
         raise HTTPException(status_code=404, detail="Caller not found")
     
-    if recipientId not in caller.get("friends", []):
+    if req.recipientId not in caller.get("friends", []):
         raise HTTPException(status_code=403, detail="You can only call friends")
     
     # Get Agora credentials
