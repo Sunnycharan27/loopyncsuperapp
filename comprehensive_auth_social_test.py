@@ -420,8 +420,9 @@ class ComprehensiveAuthSocialTester:
             if post_id:
                 print(f"   Commenting on post {post_id}...")
                 comment_response = self.session.post(
-                    f"{BACKEND_URL}/posts/{post_id}/comments",
+                    f"{BACKEND_URL}/posts/{post_id}/comment",
                     json={"text": "Great post! This is a test comment."},
+                    params={"authorId": self.demo_user_data.get("id")},
                     headers={
                         "Authorization": f"Bearer {self.demo_auth_token}",
                         "Content-Type": "application/json"
