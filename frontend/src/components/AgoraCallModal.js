@@ -263,23 +263,47 @@ const AgoraCallModal = ({
   };
 
   const cleanupCall = async () => {
+    if (isCleaningUpRef.current) {
+      console.log('Cleanup already in progress');
+      return;
+    }
+    
+    isCleaningUpRef.current = true;
+    isMountedRef.current = false;
+    
+    console.log('Cleaning up call...');
+    
     // Stop timer
     if (timerRef.current) {
       clearInterval(timerRef.current);
+      timerRef.current = null;
     }
 
     // Close local tracks
-    if (localTracksRef.current.audio) {
-      localTracksRef.current.audio.close();
-    }
-    if (localTracksRef.current.video) {
-      localTracksRef.current.video.close();
+    try {
+      if (localTracksRef.current.audio) {
+        localTracksRef.current.audio.close();
+        localTracksRef.current.audio = null;
+      }
+      if (localTracksRef.current.video) {
+        localTracksRef.current.video.close();
+        localTracksRef.current.video = null;
+      }
+    } catch (error) {
+      console.error('Error closing tracks:', error);
     }
 
     // Leave channel
-    if (clientRef.current) {
-      await clientRef.current.leave();
+    try {
+      if (clientRef.current) {
+        await clientRef.current.leave();
+        clientRef.current = null;
+      }
+    } catch (error) {
+      console.error('Error leaving channel:', error);
     }
+    
+    console.log('Call cleanup complete');
   };
 
   const formatTime = (seconds) => {
