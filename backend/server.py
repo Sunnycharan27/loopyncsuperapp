@@ -6938,6 +6938,89 @@ async def recommend_events(userId: str):
         return []
 
 
+# ===== MESSENGER ENDPOINTS =====
+
+@api_router.get("/messenger/threads")
+async def get_threads(userId: str):
+    """Get all message threads for a user"""
+    try:
+        threads = await messenger_service.get_threads(userId)
+        return {"success": True, "threads": threads}
+    except Exception as e:
+        logger.error(f"Error getting threads: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/messenger/threads/{threadId}/messages")
+async def get_thread_messages(threadId: str, limit: int = 50, before: Optional[str] = None):
+    """Get messages in a thread"""
+    try:
+        messages = await messenger_service.get_messages(threadId, limit, before)
+        return {"success": True, "messages": messages}
+    except Exception as e:
+        logger.error(f"Error getting messages: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/messenger/send")
+async def send_message(request: SendMessageRequest):
+    """Send a message"""
+    try:
+        message = await messenger_service.send_message(request)
+        return {"success": True, "message": message}
+    except Exception as e:
+        logger.error(f"Error sending message: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/messenger/threads/{threadId}/read")
+async def mark_thread_read(threadId: str, userId: str, messageIds: List[str]):
+    """Mark messages as read"""
+    try:
+        await messenger_service.mark_messages_read(userId, threadId, messageIds)
+        return {"success": True}
+    except Exception as e:
+        logger.error(f"Error marking messages read: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/messenger/messages/{messageId}/react")
+async def react_to_message(messageId: str, userId: str, reaction: str):
+    """Add reaction to a message"""
+    try:
+        result = await messenger_service.add_reaction(messageId, userId, reaction)
+        return result
+    except Exception as e:
+        logger.error(f"Error adding reaction: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.delete("/messenger/messages/{messageId}")
+async def delete_message(messageId: str, userId: str):
+    """Delete a message"""
+    try:
+        await messenger_service.delete_message(messageId, userId)
+        return {"success": True}
+    except Exception as e:
+        logger.error(f"Error deleting message: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/messenger/ai/suggest")
+async def ai_message_suggest(request: AIMessageRequest, userId: str):
+    """Get AI-powered message suggestion"""
+    try:
+        response = await messenger_service.get_ai_response(request, userId)
+        return {"success": True, "suggestion": response}
+    except Exception as e:
+        logger.error(f"Error getting AI suggestion: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.get("/messenger/search")
+async def search_messages(userId: str, query: str, limit: int = 20):
+    """Search messages"""
+    try:
+        messages = await messenger_service.search_messages(userId, query, limit)
+        return {"success": True, "messages": messages}
+    except Exception as e:
+        logger.error(f"Error searching messages: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # Include router
 app.include_router(api_router)
 
