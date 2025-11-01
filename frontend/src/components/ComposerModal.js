@@ -208,7 +208,7 @@ const ComposerModal = ({ currentUser, onClose, onPostCreated }) => {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,video/mp4,video/quicktime,video/x-msvideo,video/webm"
               onChange={handleFileSelect}
               className="hidden"
             />
