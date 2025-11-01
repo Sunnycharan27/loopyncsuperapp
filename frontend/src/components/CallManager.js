@@ -12,6 +12,7 @@ const CallManager = ({ currentUser }) => {
   const [activeCall, setActiveCall] = useState(null);
   const { socket } = useWebSocket();
 
+  // Listen for incoming WebSocket calls
   useEffect(() => {
     if (!socket || !currentUser) return;
 
@@ -32,6 +33,20 @@ const CallManager = ({ currentUser }) => {
       socket.off('incoming_call', handleIncomingCall);
     };
   }, [socket, currentUser]);
+
+  // Listen for outgoing call events (when user initiates a call)
+  useEffect(() => {
+    const handleOutgoingCall = (event) => {
+      console.log('📞 Outgoing call initiated:', event.detail);
+      setActiveCall(event.detail);
+    };
+
+    window.addEventListener('outgoing_call', handleOutgoingCall);
+
+    return () => {
+      window.removeEventListener('outgoing_call', handleOutgoingCall);
+    };
+  }, []);
 
   const handleAcceptCall = async () => {
     if (!incomingCall) return;
