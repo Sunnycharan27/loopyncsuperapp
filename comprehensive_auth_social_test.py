@@ -598,10 +598,13 @@ class ComprehensiveAuthSocialTester:
             if target_user_id:
                 print(f"   Sending DM to friend {target_user_id}...")
                 dm_response = self.session.post(
-                    f"{BACKEND_URL}/messages/send",
+                    f"{BACKEND_URL}/messages",
                     json={
-                        "toUserId": target_user_id,
                         "text": f"Test message sent at {datetime.now().isoformat()}"
+                    },
+                    params={
+                        "fromId": self.demo_user_data.get("id"),
+                        "toId": target_user_id
                     },
                     headers={
                         "Authorization": f"Bearer {self.demo_auth_token}",
