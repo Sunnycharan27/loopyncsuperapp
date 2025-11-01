@@ -2036,9 +2036,8 @@ async def create_post_comment_alias(postId: str, comment: CommentCreate, authorI
 
 # ===== AI VOICE BOT ENDPOINTS (OpenAI via Emergent LLM Key) =====
 
-# Initialize OpenAI client with Emergent LLM Key
+# Initialize Emergent LLM Key
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
-llm_chat = LlmChat(api_key=EMERGENT_LLM_KEY) if EMERGENT_LLM_KEY else None
 
 class VoiceQueryRequest(BaseModel):
     query: str
@@ -2049,18 +2048,25 @@ class VoiceQueryRequest(BaseModel):
 @api_router.post("/voice/chat")
 async def voice_chat(request: VoiceQueryRequest):
     """Handle voice bot queries using OpenAI via Emergent LLM Key"""
-    if not llm_chat:
+    if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=500, detail="Voice bot not configured")
     
     try:
         system_message = "You are a helpful voice assistant for Loopync social media app. Provide concise, natural responses suitable for speech. Keep responses under 100 words."
+        
+        # Create LlmChat instance for this request
+        session_id = request.session_id or f"session_{uuid.uuid4()}"
+        llm_chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=session_id,
+            system_message=system_message
+        )
         
         user_message = UserMessage(content=request.query)
         
         # Use LlmChat from emergentintegrations
         response = await llm_chat.achat(
             messages=[user_message],
-            system_message=system_message,
             model="gpt-4o",
             temperature=request.temperature,
             max_tokens=request.max_tokens
@@ -2070,7 +2076,7 @@ async def voice_chat(request: VoiceQueryRequest):
             "success": True,
             "data": {
                 "response": response,
-                "session_id": request.session_id,
+                "session_id": session_id,
                 "model": "gpt-4o"
             }
         }
