@@ -2065,10 +2065,7 @@ async def voice_chat(request: VoiceQueryRequest):
         user_message = UserMessage(text=request.query)
         
         # Use LlmChat from emergentintegrations
-        response = await llm_chat.send_message(
-            message=user_message,
-            model="gpt-4o"
-        )
+        response = await llm_chat.send_message(user_message)
         
         return {
             "success": True,
