@@ -1,31 +1,36 @@
 #!/usr/bin/env python3
 """
-AI Voice Bot Backend Testing Suite
-Comprehensive testing for the AI Voice Bot endpoint using OpenAI GPT-4o via Emergent LLM Key
-
-Test Requirements from Review Request:
-1. Basic Voice Chat Test - POST /api/voice/chat with query validation
-2. Session Persistence Test - Test conversation memory across multiple messages
-3. Multiple Query Types - Test different types of queries (questions, commands, casual)
-4. Error Handling - Test empty queries and missing fields
-5. AI Response Quality - Verify response format and content quality
+Comprehensive Agora Video/Audio Calling System Backend Test
+Test Agora Video/Audio Calling System - Complete Call Flow
 
 Backend URL: https://socialverse-62.preview.emergentagent.com/api
-Test Credentials: demo@loopync.com / password123
+Test Credentials: 
+- User 1 (Caller): demo@loopync.com / password123
+- User 2 (Recipient): Need to check if demo user has friends or create test scenario
+
+COMPREHENSIVE CALLING SYSTEM TEST:
+- Test 1: Verify Agora Configuration
+- Test 2: Friend Relationship Check  
+- Test 3: Call Initiation
+- Test 4: Call Record Creation
+- Test 5: Answer Call Endpoint
+- Test 6: End Call Endpoint
+- Test 7: Call History
 """
 
 import requests
 import json
-import time
+import os
 import sys
 from datetime import datetime
+import time
 
 # Configuration
-BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
+BASE_URL = "https://socialverse-62.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
-class VoiceBotTester:
+class AgoraCallTestSuite:
     def __init__(self):
         self.session = requests.Session()
         self.auth_token = None
