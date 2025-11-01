@@ -1244,20 +1244,57 @@ async def login(req: LoginRequest):
             )
             logger.info(f"💰 Demo user wallet topped up to ₹10,000 for testing")
         
-        # If demo user has no friends, add some seeded users as friends
+        # If demo user has no friends, create some test users for them
         if len(current_friends) == 0:
-            seeded_user_ids = ['u1', 'u2', 'u3']
-            updated_friends = []
+            logger.info(f"🔧 Creating test friends for demo user...")
             
-            # Check which seeded users exist and add them as friends
-            for seeded_id in seeded_user_ids:
-                seeded_user = await db.users.find_one({"id": seeded_id}, {"_id": 0})
-                if seeded_user:
-                    # Add to demo user's friends
-                    updated_friends.append(seeded_id)
-                    
-                    # Also add demo user to seeded user's friends list (bidirectional)
-                    seeded_friends = seeded_user.get('friends', [])
+            # Create test users if they don't exist
+            test_users = [
+                {"id": "test_user_1", "name": "Alice Johnson", "email": "alice@test.com", "handle": "alice"},
+                {"id": "test_user_2", "name": "Bob Smith", "email": "bob@test.com", "handle": "bob"},
+                {"id": "test_user_3", "name": "Charlie Brown", "email": "charlie@test.com", "handle": "charlie"}
+            ]
+            
+            updated_friends = []
+            for test_user_data in test_users:
+                # Check if user exists
+                existing = await db.users.find_one({"id": test_user_data["id"]}, {"_id": 0})
+                if not existing:
+                    # Create test user
+                    test_user = User(
+                        id=test_user_data["id"],
+                        handle=test_user_data["handle"],
+                        name=test_user_data["name"],
+                        email=test_user_data["email"],
+                        avatar=f"https://api.dicebear.com/7.x/avataaars/svg?seed={test_user_data['handle']}",
+                        isVerified=True,
+                        online=False,
+                        friends=[user['user_id']],  # Add demo user as friend
+                        bio=f"Test user for demo purposes"
+                    )
+                    await db.users.insert_one(test_user.model_dump())
+                    logger.info(f"✅ Created test user: {test_user_data['name']}")
+                else:
+                    # Ensure bidirectional friendship
+                    if user['user_id'] not in existing.get('friends', []):
+                        await db.users.update_one(
+                            {"id": test_user_data["id"]},
+                            {"$addToSet": {"friends": user['user_id']}}
+                        )
+                
+                updated_friends.append(test_user_data["id"])
+            
+            # Update demo user's friends list
+            if updated_friends:
+                await db.users.update_one(
+                    {"id": user['user_id']},
+                    {"$set": {"friends": updated_friends}}
+                )
+                mongo_user['friends'] = updated_friends
+                logger.info(f"✅ Demo user now has {len(updated_friends)} friends for testing")
+        
+        # Refresh mongo_user data after updates
+        mongo_user = await db.users.find_one({"id": user['user_id']}, {"_id": 0})
                     if user['user_id'] not in seeded_friends:
                         seeded_friends.append(user['user_id'])
                         await db.users.update_one(
