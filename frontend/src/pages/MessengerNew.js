@@ -348,13 +348,64 @@ const MessengerNew = () => {
             <Search className="absolute left-3 top-3 text-gray-500" size={20} />
             <input
               type="text"
-              placeholder="Search conversations"
+              placeholder="Search friends or conversations"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               className="w-full pl-10 pr-4 py-2 bg-gray-900 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
+            {searchQuery && (
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSearchResults([]);
+                  setIsSearching(false);
+                }}
+                className="absolute right-3 top-3 text-gray-500 hover:text-white"
+              >
+                <X size={20} />
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Search Results (Friends) */}
+        {isSearching && searchQuery && (
+          <div className="border-b border-gray-800 bg-gray-900">
+            <div className="p-2">
+              <p className="text-xs text-gray-500 px-2 mb-2">
+                {searchResults.length > 0 ? 'Friends' : 'No friends found'}
+              </p>
+              {searchResults.map(friend => (
+                <div
+                  key={friend.id}
+                  onClick={() => startChatWithFriend(friend)}
+                  className="flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-800 rounded-lg transition"
+                >
+                  <img
+                    src={friend.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${friend.id}`}
+                    alt={friend.name}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="font-semibold text-white">{friend.name}</p>
+                    <p className="text-xs text-gray-400">
+                      {friend.hasThread ? 'Tap to open chat' : 'Tap to start chatting'}
+                    </p>
+                  </div>
+                  {friend.online && (
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  )}
+                </div>
+              ))}
+              {searchResults.length === 0 && (
+                <div className="text-center py-4 text-gray-500 text-sm">
+                  <p>No friends found with "{searchQuery}"</p>
+                  <p className="mt-1">Try searching for someone else</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Threads */}
         <div className="flex-1 overflow-y-auto">
