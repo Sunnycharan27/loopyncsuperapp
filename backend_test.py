@@ -1,36 +1,32 @@
 #!/usr/bin/env python3
 """
-Comprehensive Agora Video/Audio Calling System Backend Test
-Test Agora Video/Audio Calling System - Complete Call Flow
+CRITICAL CALL FUNCTIONALITY TESTING - Audio & Video Call Initiation Fix Verification
 
-Backend URL: https://loopync-social-1.preview.emergentagent.com/api
-Test Credentials: 
-- User 1 (Caller): demo@loopync.com / password123
-- User 2 (Recipient): Need to check if demo user has friends or create test scenario
+🎯 **TESTING SCOPE**: Test call initiation after backend Pydantic model fix
 
-COMPREHENSIVE CALLING SYSTEM TEST:
-- Test 1: Verify Agora Configuration
-- Test 2: Friend Relationship Check  
-- Test 3: Call Initiation
-- Test 4: Call Record Creation
-- Test 5: Answer Call Endpoint
-- Test 6: End Call Endpoint
-- Test 7: Call History
+**USER ISSUE**: 
+- React error when initiating calls: "Objects are not valid as a React child"
+- Call initiation failing for both audio and video calls
+
+**FIXES APPLIED**:
+1. Backend: Changed call initiation endpoint to use Pydantic model (CallInitiateRequest)
+2. Frontend: Enhanced error handling to properly extract error messages as strings
+
+**BACKEND URL**: https://loopync-social-1.preview.emergentagent.com/api
+**TEST CREDENTIALS**: demo@loopync.com / password123
 """
 
 import requests
 import json
-import os
 import sys
 from datetime import datetime
-import time
 
 # Configuration
 BASE_URL = "https://loopync-social-1.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
-class AgoraCallTestSuite:
+class CallTester:
     def __init__(self):
         self.base_url = BASE_URL
         self.session = requests.Session()
