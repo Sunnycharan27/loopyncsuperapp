@@ -269,7 +269,7 @@ function App() {
                 !authLoaded ? (
                   <div className="min-h-screen grid place-items-center text-gray-400">Loading…</div>
                 ) : isAuthenticated ? (
-                  <Messenger />
+                  <MessengerNew />
                 ) : (
                   <Navigate to="/auth" />
                 )
