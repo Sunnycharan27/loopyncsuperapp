@@ -427,11 +427,13 @@ class AudioVideoCallingTester:
         call_id = call_data.get("callId")
         self.log(f"📴 Testing call end for call {call_id}...")
         
-        response = self.session.post(f"{BASE_URL}/calls/{call_id}/end")
+        # Use the caller's user ID (demo user) as the ending user
+        response = self.session.post(f"{BASE_URL}/calls/{call_id}/end?userId={self.user_id}")
         
         if response.status_code == 200:
+            data = response.json()
             self.record_test("phase3_call_management", "Call End", True, f"Call {call_id} ended successfully")
-            self.log(f"✅ Call ended successfully")
+            self.log(f"✅ Call ended successfully - Response: {data}")
             return True
         else:
             self.record_test("phase3_call_management", "Call End", False, f"HTTP {response.status_code}: {response.text}")
