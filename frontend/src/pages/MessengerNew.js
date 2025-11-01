@@ -118,6 +118,80 @@ const MessengerNew = () => {
     }
   };
 
+  const searchFriends = async (query) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      // Get user's friends
+      const friendsRes = await axios.get(`${API}/messenger/friends?userId=${currentUser.id}`);
+      const friends = friendsRes.data.friends || [];
+
+      // Filter friends by name
+      const filtered = friends.filter(friend => 
+        friend.name.toLowerCase().includes(query.toLowerCase())
+      );
+
+      setSearchResults(filtered);
+    } catch (error) {
+      console.error('Error searching friends:', error);
+      setSearchResults([]);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    searchFriends(query);
+  };
+
+  const startChatWithFriend = async (friend) => {
+    try {
+      // Check if thread already exists
+      const existingThread = threads.find(t => 
+        t.otherUser?.id === friend.id
+      );
+
+      if (existingThread) {
+        // Open existing thread
+        selectThread(existingThread);
+        setSearchQuery('');
+        setSearchResults([]);
+        setIsSearching(false);
+        return;
+      }
+
+      // Create new thread
+      const res = await axios.post(
+        `${API}/messenger/start?userId=${currentUser.id}&friendId=${friend.id}`
+      );
+
+      if (res.data.success) {
+        const newThread = res.data.thread;
+        
+        // Add to threads list
+        setThreads(prev => [newThread, ...prev]);
+        
+        // Select the new thread
+        selectThread(newThread);
+        
+        // Clear search
+        setSearchQuery('');
+        setSearchResults([]);
+        setIsSearching(false);
+        
+        toast.success(`Started chat with ${friend.name}`);
+      }
+    } catch (error) {
+      console.error('Error starting chat:', error);
+      toast.error(error.response?.data?.detail || 'Failed to start conversation');
+    }
+  };
+
   const loadMessages = async (threadId) => {
     try {
       const res = await axios.get(`${API}/messenger/threads/${threadId}/messages?limit=50`);
