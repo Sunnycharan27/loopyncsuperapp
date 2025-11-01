@@ -395,14 +395,13 @@ class AuthMessengerTestSuite:
                     friend_user_id = friend_user.get("id")
                     friend_name = friend_user.get("name", "Unknown")
                     
-                    # Test starting conversation
-                    start_conversation_data = {
-                        "userId": friend_user_id
-                    }
-                    
+                    # Test starting conversation (using query parameters)
                     conversation_response = self.session.post(
                         f"{self.base_url}/messenger/start", 
-                        json=start_conversation_data,
+                        params={
+                            "userId": self.demo_user_id,
+                            "friendId": friend_user_id
+                        },
                         headers=headers
                     )
                     
