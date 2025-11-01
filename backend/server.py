@@ -6294,8 +6294,8 @@ async def initiate_call(req: CallInitiateRequest):
     try:
         # Generate tokens for both caller and recipient
         # Use user IDs as UIDs (convert string to int hash)
-        caller_uid = abs(hash(callerId)) % (10 ** 9)
-        recipient_uid = abs(hash(recipientId)) % (10 ** 9)
+        caller_uid = abs(hash(req.callerId)) % (10 ** 9)
+        recipient_uid = abs(hash(req.recipientId)) % (10 ** 9)
         
         # Generate token for caller
         caller_token = RtcTokenBuilder.buildTokenWithUid(
@@ -6320,9 +6320,9 @@ async def initiate_call(req: CallInitiateRequest):
         # Create call record in database
         call = {
             "id": str(uuid.uuid4()),
-            "callerId": callerId,
-            "recipientId": recipientId,
-            "callType": callType,
+            "callerId": req.callerId,
+            "recipientId": req.recipientId,
+            "callType": req.callType,
             "status": "ringing",
             "channelName": channel_name,
             "agoraAppId": agora_app_id,
