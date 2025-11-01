@@ -2039,11 +2039,14 @@ async def create_post_comment_alias(postId: str, comment: CommentCreate, authorI
 # Initialize Emergent LLM Key
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
+# Store LlmChat instances by session_id to maintain conversation history
+voice_bot_sessions = {}
+
 class VoiceQueryRequest(BaseModel):
     query: str
     session_id: Optional[str] = None
-    temperature: float = 0.7
-    max_tokens: int = 512
+    temperature: float = Field(0.7, ge=0.0, le=2.0)
+    max_tokens: int = Field(512, ge=1, le=4000)
 
 @api_router.post("/voice/chat")
 async def voice_chat(request: VoiceQueryRequest):
@@ -2051,20 +2054,31 @@ async def voice_chat(request: VoiceQueryRequest):
     if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=500, detail="Voice bot not configured")
     
+    # Validate query
+    if not request.query or not request.query.strip():
+        raise HTTPException(status_code=400, detail="Query cannot be empty")
+    
     try:
         system_message = "You are a helpful voice assistant for Loopync social media app. Provide concise, natural responses suitable for speech. Keep responses under 100 words."
         
-        # Create LlmChat instance for this request
+        # Generate or use existing session_id
         session_id = request.session_id or f"session_{uuid.uuid4()}"
-        llm_chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=session_id,
-            system_message=system_message
-        )
         
-        user_message = UserMessage(text=request.query)
+        # Get or create LlmChat instance for this session
+        if session_id not in voice_bot_sessions:
+            voice_bot_sessions[session_id] = LlmChat(
+                api_key=EMERGENT_LLM_KEY,
+                session_id=session_id,
+                system_message=system_message
+            )
+            logger.info(f"Created new voice bot session: {session_id}")
+        else:
+            logger.info(f"Using existing voice bot session: {session_id}")
         
-        # Use LlmChat from emergentintegrations
+        llm_chat = voice_bot_sessions[session_id]
+        user_message = UserMessage(text=request.query.strip())
+        
+        # Send message and get response
         response = await llm_chat.send_message(user_message)
         
         return {
@@ -2076,9 +2090,20 @@ async def voice_chat(request: VoiceQueryRequest):
             }
         }
     
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Voice bot error: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@api_router.delete("/voice/chat/session/{session_id}")
+async def delete_voice_session(session_id: str):
+    """Delete a voice bot session to free up memory"""
+    if session_id in voice_bot_sessions:
+        del voice_bot_sessions[session_id]
+        return {"success": True, "message": "Session deleted"}
+    return {"success": False, "message": "Session not found"}
 
 
 # ===== END AI VOICE BOT ENDPOINTS =====
