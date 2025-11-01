@@ -6292,10 +6292,28 @@ async def initiate_call(req: CallInitiateRequest):
     expiration_timestamp = current_timestamp + 3600
     
     try:
-        # Generate tokens for both caller and recipient
-        # Use user IDs as UIDs (convert string to int hash)
-        caller_uid = abs(hash(req.callerId)) % (10 ** 9)
-        recipient_uid = abs(hash(req.recipientId)) % (10 ** 9)
+        # Generate unique UIDs for both caller and recipient
+        # Use hashlib for consistent, deterministic hashing
+        import hashlib
+        
+        def generate_uid(user_id: str) -> int:
+            """Generate a consistent unique integer UID from user ID string"""
+            # Use MD5 hash of user_id and take first 8 hex chars
+            hash_obj = hashlib.md5(user_id.encode())
+            hash_hex = hash_obj.hexdigest()[:8]
+            # Convert to integer (max 32-bit for Agora compatibility)
+            uid = int(hash_hex, 16) % (2**31)  # Ensure positive 32-bit int
+            return uid
+        
+        caller_uid = generate_uid(req.callerId)
+        recipient_uid = generate_uid(req.recipientId)
+        
+        # Ensure UIDs are different (should never happen with proper user IDs)
+        if caller_uid == recipient_uid:
+            # Add offset to recipient to guarantee uniqueness
+            recipient_uid = (recipient_uid + 1) % (2**31)
+        
+        logger.info(f"🎯 Generated UIDs - Caller: {caller_uid}, Recipient: {recipient_uid}")
         
         # Generate token for caller
         caller_token = RtcTokenBuilder.buildTokenWithUid(
