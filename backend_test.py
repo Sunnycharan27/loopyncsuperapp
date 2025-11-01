@@ -243,7 +243,7 @@ class AgoraCallTestSuite:
         
         try:
             # Initiate a video call
-            response = self.session.post(f"{self.base_url}/calls/initiate", json={
+            response = self.session.post(f"{self.base_url}/calls/initiate", params={
                 "callerId": self.demo_user_id,
                 "recipientId": self.friend_user_id,
                 "callType": "video"
