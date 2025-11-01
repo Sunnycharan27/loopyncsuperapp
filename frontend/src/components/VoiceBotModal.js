@@ -198,7 +198,9 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
             <div className="text-center text-gray-400 py-12">
               <Mic size={64} className="mx-auto mb-4 text-cyan-400/50" />
               <p className="text-xl font-semibold text-white mb-2">Welcome to AI Voice Assistant</p>
-              <p className="text-sm mb-4">Click the microphone button below and start talking</p>
+              <p className="text-sm mb-4">
+                {isMobile ? 'Type your questions below' : 'Click the microphone button below and start talking'}
+              </p>
               <div className="bg-gray-800/50 rounded-xl p-4 max-w-md mx-auto text-left">
                 <p className="text-xs text-gray-400 mb-2">💡 Try asking:</p>
                 <ul className="text-xs text-gray-500 space-y-1">
