@@ -25,13 +25,15 @@ const TopHeader = ({ title, subtitle, showIcons = true }) => {
         
         {showIcons && (
           <div className="flex items-center gap-2">
-            {/* AI Voice Bot Button */}
+            {/* AI Voice Bot Button - More Prominent */}
             <button
               onClick={() => setShowVoiceBot(true)}
-              className="relative w-10 h-10 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-400 to-blue-500 text-black hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg shadow-cyan-400/30 animate-pulse-slow"
+              className="relative w-11 h-11 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-400 to-blue-500 text-black hover:from-cyan-500 hover:to-blue-600 transition-all shadow-lg shadow-cyan-400/50 hover:scale-110"
               title="AI Voice Assistant"
+              aria-label="Open AI Voice Assistant"
             >
-              <Mic size={20} />
+              <Mic size={22} className="drop-shadow-lg" />
+              <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-gray-800 animate-pulse"></span>
             </button>
 
             <button
