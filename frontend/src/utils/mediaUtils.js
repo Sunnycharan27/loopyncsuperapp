@@ -12,14 +12,14 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'
 export const getMediaUrl = (mediaUrl) => {
   if (!mediaUrl) return '';
   
-  // If it's a relative path starting with /uploads, prepend backend URL
-  if (mediaUrl.startsWith('/uploads') || mediaUrl.startsWith('/api/uploads')) {
-    return `${BACKEND_URL}${mediaUrl}`;
-  }
-  
   // If it already has http/https, return as-is (external URL or Cloudinary)
   if (mediaUrl.startsWith('http://') || mediaUrl.startsWith('https://')) {
     return mediaUrl;
+  }
+  
+  // If it's a relative path starting with /api/uploads or /uploads, prepend backend URL
+  if (mediaUrl.startsWith('/api/uploads') || mediaUrl.startsWith('/uploads')) {
+    return `${BACKEND_URL}${mediaUrl}`;
   }
   
   // Default: prepend backend URL
