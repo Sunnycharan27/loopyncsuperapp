@@ -3939,8 +3939,8 @@ async def upload_file(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     
-    # Return URL path
-    file_url = f"/uploads/{unique_filename}"
+    # Return URL path - use /api/uploads for ingress compatibility
+    file_url = f"/api/uploads/{unique_filename}"
     
     return {
         "url": file_url,
