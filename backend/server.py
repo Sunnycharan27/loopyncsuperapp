@@ -1149,6 +1149,44 @@ async def check_handle_availability(handle: str):
         "handle": handle
     }
 
+class SignupRequest(BaseModel):
+    email: str
+    password: str
+    name: str
+    handle: Optional[str] = None
+
+@api_router.post("/auth/signup", response_model=dict)
+async def signup(req: SignupRequest):
+    """
+    Create a new user account with email and password.
+    Returns a JWT token on successful signup.
+    """
+    try:
+        # Create user in MongoDB
+        user = await auth_service.create_user(
+            email=req.email,
+            password=req.password,
+            name=req.name,
+            handle=req.handle
+        )
+        
+        # Generate JWT token
+        token = create_access_token(user['id'])
+        
+        logger.info(f"✅ New user signed up: {req.email}")
+        
+        return {
+            "token": token,
+            "user": user,
+            "message": "Account created successfully!"
+        }
+    
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Signup error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Signup failed")
+
 @api_router.post("/auth/login", response_model=dict)
 async def login(req: LoginRequest):
     """
