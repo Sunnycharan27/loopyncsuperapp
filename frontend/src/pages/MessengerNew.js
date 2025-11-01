@@ -409,12 +409,13 @@ const MessengerNew = () => {
 
         {/* Threads */}
         <div className="flex-1 overflow-y-auto">
-          {filteredThreads.length === 0 ? (
+          {/* Show search results or threads based on search state */}
+          {!isSearching && filteredThreads.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
               <p>No conversations yet</p>
-              <p className="text-sm mt-2">Start chatting with your friends!</p>
+              <p className="text-sm mt-2">Search for friends above to start chatting!</p>
             </div>
-          ) : (
+          ) : !isSearching ? (
             filteredThreads.map(thread => (
               <div
                 key={thread.id}
