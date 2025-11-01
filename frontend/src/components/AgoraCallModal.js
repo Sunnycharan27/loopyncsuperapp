@@ -40,8 +40,16 @@ const AgoraCallModal = ({
   }, []);
 
   const initializeCall = async () => {
+    if (isInitializing || isCleaningUpRef.current) {
+      console.log('Skipping initialization - already in progress or cleaning up');
+      return;
+    }
+
     try {
+      setIsInitializing(true);
       setCallState('connecting');
+      
+      if (!isMountedRef.current) return;
       
       // Create Agora client with optimized settings for cross-platform
       const client = AgoraRTC.createClient({ 
@@ -54,6 +62,8 @@ const AgoraCallModal = ({
 
       // Set up event listeners
       client.on('user-published', async (user, mediaType) => {
+        if (!isMountedRef.current) return;
+        
         console.log('User published:', user.uid, mediaType);
         await client.subscribe(user, mediaType);
         
@@ -85,8 +95,10 @@ const AgoraCallModal = ({
 
       client.on('user-left', (user) => {
         console.log(`User ${user.uid} left the channel`);
-        toast.info('Call ended');
-        handleEndCall();
+        if (isMountedRef.current) {
+          toast.info('Call ended');
+          handleEndCall();
+        }
       });
 
       // Join the channel with correct token based on call direction
@@ -104,19 +116,38 @@ const AgoraCallModal = ({
         hasToken: !!token
       });
       
+      if (!isMountedRef.current) return;
+      
       await client.join(appId, channelName, token, uid);
+      
+      if (!isMountedRef.current) {
+        // Component unmounted during join - cleanup
+        await client.leave();
+        return;
+      }
+      
       console.log('Successfully joined Agora channel:', channelName);
       
       // Create and publish local tracks with mobile-friendly settings
+      if (!isMountedRef.current) return;
+      
       const audioTrack = await AgoraRTC.createMicrophoneAudioTrack({
         encoderConfig: 'music_standard', // Better audio quality
         AEC: true, // Echo cancellation
         ANS: true, // Noise suppression
         AGC: true  // Auto gain control
       });
+      
+      if (!isMountedRef.current) {
+        audioTrack.close();
+        return;
+      }
+      
       localTracksRef.current.audio = audioTrack;
       
       if (callData.callType === 'video') {
+        if (!isMountedRef.current) return;
+        
         // Mobile-optimized video settings
         const videoTrack = await AgoraRTC.createCameraVideoTrack({
           optimizationMode: 'detail', // Better for mobile
@@ -129,17 +160,29 @@ const AgoraCallModal = ({
           },
           facingMode: 'user' // Front camera by default
         });
+        
+        if (!isMountedRef.current) {
+          videoTrack.close();
+          return;
+        }
+        
         localTracksRef.current.video = videoTrack;
         
         // Play local video
-        if (localVideoRef.current) {
+        if (localVideoRef.current && isMountedRef.current) {
           videoTrack.play(localVideoRef.current);
         }
         
+        if (!isMountedRef.current) return;
+        
         await client.publish([audioTrack, videoTrack]);
       } else {
+        if (!isMountedRef.current) return;
+        
         await client.publish([audioTrack]);
       }
+
+      if (!isMountedRef.current) return;
 
       console.log('Published local tracks');
       
@@ -147,21 +190,33 @@ const AgoraCallModal = ({
         setCallState('ringing');
       }
       
+      setIsInitializing(false);
+      
     } catch (error) {
       console.error('Failed to initialize call:', error);
       
-      // Provide specific error messages
+      // Don't show error if it's an OPERATION_ABORTED (component unmounted)
+      if (error.code === 'OPERATION_ABORTED' || !isMountedRef.current) {
+        console.log('Call initialization aborted - component unmounted');
+        return;
+      }
+      
+      // Provide specific error messages for other errors
       let errorMessage = 'Failed to connect call';
       if (error.code === 'PERMISSION_DENIED') {
         errorMessage = 'Camera/microphone permission denied. Please allow access and try again.';
       } else if (error.code === 'INVALID_OPERATION') {
         errorMessage = 'Invalid call operation. Please try again.';
-      } else if (error.message) {
+      } else if (error.message && !error.message.includes('cancel')) {
         errorMessage = `Call error: ${error.message}`;
       }
       
-      toast.error(errorMessage);
-      onClose();
+      if (isMountedRef.current) {
+        toast.error(errorMessage);
+        onClose();
+      }
+      
+      setIsInitializing(false);
     }
   };
 
