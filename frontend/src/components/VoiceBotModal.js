@@ -193,9 +193,29 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
         {/* Error Display */}
         {(error || speechError) && (
           <div className="px-4 pb-2">
-            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-3">
-              <p className="text-red-400 text-sm">
-                ⚠️ {error || speechError}
+            <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4">
+              <p className="text-red-400 text-sm font-semibold mb-2">
+                ⚠️ Error
+              </p>
+              <p className="text-red-300 text-sm">
+                {error || speechError}
+              </p>
+              {(speechError && speechError.includes('denied')) && (
+                <p className="text-red-200 text-xs mt-2">
+                  💡 Tip: Click the 🔒 icon in your browser's address bar to allow microphone access
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* AI Speaking Indicator */}
+        {isSpeaking && (
+          <div className="px-4 pb-2">
+            <div className="bg-cyan-400/20 border border-cyan-400/50 rounded-xl p-3 flex items-center gap-2">
+              <Volume2 size={18} className="text-cyan-400 animate-pulse" />
+              <p className="text-cyan-400 text-sm font-semibold">
+                AI is speaking...
               </p>
             </div>
           </div>
