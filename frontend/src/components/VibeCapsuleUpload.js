@@ -83,13 +83,16 @@ const VibeCapsuleUpload = ({ currentUser, onUploadComplete }) => {
       );
 
       toast.success("🎉 Vibe Capsule created!");
+      
+      // Call callback first before closing modal
+      if (onUploadComplete) {
+        await onUploadComplete();
+      }
+      
+      // Then close modal and reset
       setShowModal(false);
       setMediaUrl("");
       setCaption("");
-      
-      if (onUploadComplete) {
-        onUploadComplete();
-      }
     } catch (error) {
       console.error("Failed to create capsule:", error);
       toast.error("Failed to create Vibe Capsule");
