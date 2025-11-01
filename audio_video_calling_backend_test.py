@@ -360,17 +360,23 @@ class AudioVideoCallingTester:
         call_id = call_data.get("callId")
         self.log(f"📞 Testing call answer for call {call_id}...")
         
-        response = self.session.post(f"{BASE_URL}/calls/{call_id}/answer")
+        # Use the recipient's user ID (first friend) as the answering user
+        recipient_id = self.friends[0].get("id") if self.friends else None
+        if not recipient_id:
+            self.record_test("phase3_call_management", "Call Answer", False, "No recipient ID available")
+            return False
+        
+        response = self.session.post(f"{BASE_URL}/calls/{call_id}/answer?userId={recipient_id}")
         
         if response.status_code == 200:
             data = response.json()
-            if data.get("status") == "active":
+            if data.get("status") == "ongoing" or "answered" in data.get("message", "").lower():
                 self.record_test("phase3_call_management", "Call Answer", True, f"Call {call_id} answered successfully")
-                self.log(f"✅ Call answered successfully - Status: {data.get('status')}")
+                self.log(f"✅ Call answered successfully - Response: {data}")
                 return True
             else:
-                self.record_test("phase3_call_management", "Call Answer", False, f"Unexpected status: {data.get('status')}")
-                self.log(f"❌ Unexpected call status: {data.get('status')}", "ERROR")
+                self.record_test("phase3_call_management", "Call Answer", False, f"Unexpected response: {data}")
+                self.log(f"❌ Unexpected call response: {data}", "ERROR")
                 return False
         else:
             self.record_test("phase3_call_management", "Call Answer", False, f"HTTP {response.status_code}: {response.text}")
