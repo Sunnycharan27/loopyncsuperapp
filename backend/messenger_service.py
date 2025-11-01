@@ -59,7 +59,7 @@ class MessengerService:
         thread = await self.db.threads.find_one({
             "participants": participants,
             "type": "direct"
-        })
+        }, {"_id": 0})
         
         if thread:
             return thread
