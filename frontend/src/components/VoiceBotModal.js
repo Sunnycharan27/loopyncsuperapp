@@ -173,10 +173,19 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
         {/* Messages */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.length === 0 && (
-            <div className="text-center text-gray-500 py-12">
-              <Mic size={48} className="mx-auto mb-4 text-gray-600" />
-              <p className="text-lg">Click the microphone to start talking</p>
-              <p className="text-sm mt-2">Ask me anything!</p>
+            <div className="text-center text-gray-400 py-12">
+              <Mic size={64} className="mx-auto mb-4 text-cyan-400/50" />
+              <p className="text-xl font-semibold text-white mb-2">Welcome to AI Voice Assistant</p>
+              <p className="text-sm mb-4">Click the microphone button below and start talking</p>
+              <div className="bg-gray-800/50 rounded-xl p-4 max-w-md mx-auto text-left">
+                <p className="text-xs text-gray-400 mb-2">💡 Try asking:</p>
+                <ul className="text-xs text-gray-500 space-y-1">
+                  <li>• "What is Loopync?"</li>
+                  <li>• "How do I add friends?"</li>
+                  <li>• "Tell me about the features"</li>
+                  <li>• "What can I do here?"</li>
+                </ul>
+              </div>
             </div>
           )}
 
