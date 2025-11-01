@@ -30,6 +30,23 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
     stop: stopSpeaking
   } = useTextToSpeech();
 
+  // Add welcome message when modal opens
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      const welcomeMessage = {
+        role: 'assistant',
+        content: "Hi! I'm your AI voice assistant. Click the microphone button and ask me anything!",
+        timestamp: new Date()
+      };
+      setMessages([welcomeMessage]);
+      
+      // Speak welcome message
+      setTimeout(() => {
+        speak("Hi! I'm your AI voice assistant. Click the microphone button and ask me anything!");
+      }, 500);
+    }
+  }, [isOpen, messages.length, speak]);
+
   useEffect(() => {
     if (transcript && !isListening) {
       sendQuery(transcript);
