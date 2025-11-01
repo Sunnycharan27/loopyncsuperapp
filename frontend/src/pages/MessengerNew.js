@@ -327,13 +327,29 @@ const MessengerNew = () => {
       
     } catch (error) {
       console.error('Error initiating call:', error);
-      const errorMsg = error.response?.data?.detail || error.message || 'Failed to initiate call';
-      toast.error(errorMsg);
       
-      // Log detailed error for debugging
-      if (error.response) {
-        console.error('Error response:', error.response.status, error.response.data);
+      // Extract error message safely
+      let errorMsg = 'Failed to initiate call';
+      
+      if (error.response?.data) {
+        const data = error.response.data;
+        
+        // Handle different error response formats
+        if (typeof data.detail === 'string') {
+          errorMsg = data.detail;
+        } else if (Array.isArray(data.detail)) {
+          errorMsg = data.detail.map(err => err.msg || err.message || JSON.stringify(err)).join(', ');
+        } else if (typeof data === 'string') {
+          errorMsg = data;
+        } else if (data.message) {
+          errorMsg = data.message;
+        }
+      } else if (error.message) {
+        errorMsg = error.message;
       }
+      
+      toast.error(errorMsg);
+      console.error('Call initiation error details:', error.response?.data);
     }
   };
 
