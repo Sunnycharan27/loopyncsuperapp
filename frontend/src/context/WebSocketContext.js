@@ -87,10 +87,10 @@ export const WebSocketProvider = ({ children }) => {
       // This will be handled by Messenger component
     });
 
-    // Call events
-    newSocket.on('call_incoming', (data) => {
-      console.log('📞 Incoming call:', data);
-      // This will be handled by components that have call handling
+    // Call events - listen for 'incoming_call' to match backend emission
+    newSocket.on('incoming_call', (data) => {
+      console.log('📞 Incoming call event received in WebSocketContext:', data);
+      // This will be handled by CallManager component
     });
 
     newSocket.on('call_initiated', (data) => {
