@@ -82,7 +82,7 @@ class MessengerService:
     
     async def check_friendship(self, user1_id: str, user2_id: str) -> bool:
         """Check if two users are friends"""
-        user1 = await self.db.users.find_one({"id": user1_id})
+        user1 = await self.db.users.find_one({"id": user1_id}, {"_id": 0})
         if not user1:
             return False
         
