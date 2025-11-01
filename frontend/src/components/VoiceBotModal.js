@@ -43,6 +43,8 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
       setError(null);
       setIsLoading(true);
 
+      console.log('Sending query to AI:', query);
+
       // Add user message
       setMessages(prev => [...prev, {
         role: 'user',
@@ -59,6 +61,8 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
         timeout: 30000
       });
 
+      console.log('AI Response:', response.data);
+
       if (response.data.success) {
         const botMessage = {
           role: 'assistant',
@@ -68,17 +72,25 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
 
         setMessages(prev => [...prev, botMessage]);
 
-        // Speak the response
-        if (window.speechSynthesis) {
-          speak(response.data.data.response);
-        }
+        // Speak the response using text-to-speech
+        console.log('Speaking AI response:', response.data.data.response);
+        speak(response.data.data.response);
+      } else {
+        throw new Error('AI response was not successful');
       }
 
       resetTranscript();
     } catch (err) {
       const errorMessage = err.response?.data?.detail || err.message || 'Unknown error';
       setError(errorMessage);
-      console.error('Error:', err);
+      console.error('Error sending query:', err);
+      
+      // Add error message to chat
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `Sorry, I encountered an error: ${errorMessage}`,
+        timestamp: new Date()
+      }]);
     } finally {
       setIsLoading(false);
     }
