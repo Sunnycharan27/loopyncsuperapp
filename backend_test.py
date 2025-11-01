@@ -550,6 +550,15 @@ class AgoraCallTestSuite:
                         f"Expected list, got: {type(calls)}"
                     )
                     return False
+            elif response.status_code == 500:
+                # Known bug in call history endpoint (receiverId vs recipientId)
+                self.log_test_result(
+                    "Call History",
+                    False,
+                    "Call history endpoint has a backend bug",
+                    "Backend error: KeyError 'receiverId' - should be 'recipientId'. This is a known backend bug that needs fixing."
+                )
+                return False
             else:
                 self.log_test_result(
                     "Call History",
