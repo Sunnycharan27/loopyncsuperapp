@@ -16,7 +16,6 @@ import EventDetail from "./pages/EventDetail";
 import Payment from "./pages/Payment";
 import Marketplace from "./pages/Marketplace";
 import Onboarding from "./pages/Onboarding";
-import Messenger from "./pages/Messenger";
 import MessengerNew from "./pages/MessengerNew";
 import Notifications from "./pages/Notifications";
 import Profile from "./pages/ProfileVibe";
