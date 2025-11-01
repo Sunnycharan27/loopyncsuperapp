@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
 """
-COMPREHENSIVE EVENTS AND TICKETING SYSTEM TEST - QR CODE VERIFICATION
+AI Voice Bot Backend Testing Suite
+Comprehensive testing for the AI Voice Bot endpoint using OpenAI GPT-4o via Emergent LLM Key
 
-Testing complete event booking flow with QR code generation as specified in review request.
+Test Requirements from Review Request:
+1. Basic Voice Chat Test - POST /api/voice/chat with query validation
+2. Session Persistence Test - Test conversation memory across multiple messages
+3. Multiple Query Types - Test different types of queries (questions, commands, casual)
+4. Error Handling - Test empty queries and missing fields
+5. AI Response Quality - Verify response format and content quality
 
 Backend URL: https://socialverse-62.preview.emergentagent.com/api
-Test User: demo@loopync.com / password123
+Test Credentials: demo@loopync.com / password123
 """
 
 import requests
 import json
+import time
 import sys
-import re
-import base64
 from datetime import datetime
 
 # Configuration
@@ -20,7 +25,7 @@ BACKEND_URL = "https://socialverse-62.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
-class EventTicketingTester:
+class VoiceBotTester:
     def __init__(self):
         self.session = requests.Session()
         self.user_id = None
