@@ -1152,174 +1152,93 @@ async def check_handle_availability(handle: str):
 @api_router.post("/auth/login", response_model=dict)
 async def login(req: LoginRequest):
     """
-    Login with email and password.
+    Login with email and password using MongoDB.
     Returns a JWT token on successful authentication.
     """
-    # Verify credentials with Google Sheets
-    user = sheets_db.verify_password(req.email, req.password)
-    
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid credentials")
-    
-    # Get or create user data in MongoDB for app functionality
-    mongo_user = await db.users.find_one({"id": user['user_id']}, {"_id": 0})
-    
-    if not mongo_user:
-        # Try to find by email first (might exist with different ID)
-        mongo_user = await db.users.find_one({"email": user['email']}, {"_id": 0})
+    try:
+        # Authenticate user with MongoDB
+        user = await auth_service.authenticate_user(req.email, req.password)
         
-        if mongo_user:
-            # User exists with same email but different ID, update the ID
-            logger.info(f"Updating user ID from {mongo_user.get('id')} to {user['user_id']}")
-            await db.users.update_one(
-                {"email": user['email']},
-                {"$set": {"id": user['user_id']}}
-            )
-            mongo_user['id'] = user['user_id']
-        else:
-            # Create new user in MongoDB
-            base_handle = user['email'].split('@')[0]
-            handle = base_handle
+        if not user:
+            raise HTTPException(status_code=401, detail="Invalid email or password")
+        
+        # Special handling for demo user - ensure they have friends for testing
+        if req.email == 'demo@loopync.com':
+            current_friends = user.get('friends', [])
             
-            # Ensure unique handle
-            counter = 1
-            while await db.users.find_one({"handle": handle}, {"_id": 0}):
-                handle = f"{base_handle}{counter}"
-                counter += 1
-            
-            new_mongo_user = User(
-                id=user['user_id'],
-                handle=handle,
-                name=user['name'],
-                email=user['email'],
-                avatar=f"https://api.dicebear.com/7.x/avataaars/svg?seed={handle}",
-                isVerified=True  # Existing users are verified
-            )
-            doc = new_mongo_user.model_dump()
-            try:
-                await db.users.insert_one(doc)
-                mongo_user = doc
-                logger.info(f"Created new MongoDB user: {user['user_id']} ({user['email']})")
-            except Exception as e:
-                logger.error(f"Failed to create user in MongoDB: {str(e)}")
-                # Try one more time to fetch the user
-                mongo_user = await db.users.find_one({"id": user['user_id']}, {"_id": 0})
-                if not mongo_user:
-                    mongo_user = await db.users.find_one({"email": user['email']}, {"_id": 0})
+            # If demo user has no friends, create test users
+            if len(current_friends) == 0:
+                logger.info(f"🔧 Creating test friends for demo user...")
                 
-                if not mongo_user:
-                    # Return basic user data even if MongoDB creation failed
-                    logger.warning(f"Using fallback user data for {user['email']}")
-                    mongo_user = {
-                        "id": user['user_id'],
-                        "handle": handle,
-                        "name": user['name'],
-                        "email": user['email'],
-                        "avatar": f"https://api.dicebear.com/7.x/avataaars/svg?seed={handle}",
-                        "isVerified": True,
-                        "bio": "",
-                        "walletBalance": 0.0,
-                        "friends": [],
-                        "friendRequestsSent": [],
-                        "friendRequestsReceived": []
-                    }
-    
-    # Special handling for demo user - ensure they have friends for testing
-    if user['email'] == 'demo@loopync.com':
-        current_friends = mongo_user.get('friends', [])
-        current_balance = mongo_user.get('walletBalance', 0.0)
-        onboarding_complete = mongo_user.get('onboardingComplete', False)
-        
-        # Mark onboarding as complete for demo user to skip onboarding flow
-        if not onboarding_complete:
-            await db.users.update_one(
-                {"id": user['user_id']},
-                {"$set": {"onboardingComplete": True}}
-            )
-            mongo_user['onboardingComplete'] = True
-            logger.info(f"✅ Demo user onboarding marked complete")
-        
-        # Give demo user initial wallet balance if they have zero or low balance
-        if current_balance < 5000:
-            await db.users.update_one(
-                {"id": user['user_id']},
-                {"$set": {"walletBalance": 10000.0}}  # ₹10,000 for testing
-            )
-            logger.info(f"💰 Demo user wallet topped up to ₹10,000 for testing")
-        
-        # If demo user has no friends, create some test users for them
-        if len(current_friends) == 0:
-            logger.info(f"🔧 Creating test friends for demo user...")
-            
-            # Create test users if they don't exist
-            test_users = [
-                {"id": "test_user_1", "name": "Alice Johnson", "email": "alice@test.com", "handle": "alice"},
-                {"id": "test_user_2", "name": "Bob Smith", "email": "bob@test.com", "handle": "bob"},
-                {"id": "test_user_3", "name": "Charlie Brown", "email": "charlie@test.com", "handle": "charlie"}
-            ]
-            
-            updated_friends = []
-            for test_user_data in test_users:
-                # Check if user exists
-                existing = await db.users.find_one({"id": test_user_data["id"]}, {"_id": 0})
-                if not existing:
-                    # Create test user
-                    test_user = User(
-                        id=test_user_data["id"],
-                        handle=test_user_data["handle"],
-                        name=test_user_data["name"],
-                        email=test_user_data["email"],
-                        avatar=f"https://api.dicebear.com/7.x/avataaars/svg?seed={test_user_data['handle']}",
-                        isVerified=True,
-                        online=False,
-                        friends=[user['user_id']],  # Add demo user as friend
-                        bio=f"Test user for demo purposes"
+                test_users = [
+                    {"id": "test_user_1", "name": "Alice Johnson", "email": "alice@test.com", "handle": "alice", "password": "test123"},
+                    {"id": "test_user_2", "name": "Bob Smith", "email": "bob@test.com", "handle": "bob", "password": "test123"},
+                    {"id": "test_user_3", "name": "Charlie Brown", "email": "charlie@test.com", "handle": "charlie", "password": "test123"}
+                ]
+                
+                updated_friends = []
+                for test_user_data in test_users:
+                    existing = await db.users.find_one({"id": test_user_data["id"]}, {"_id": 0})
+                    if not existing:
+                        # Create test user with hashed password
+                        test_user = {
+                            "id": test_user_data["id"],
+                            "handle": test_user_data["handle"],
+                            "name": test_user_data["name"],
+                            "email": test_user_data["email"],
+                            "password": auth_service.hash_password(test_user_data["password"]),
+                            "avatar": f"https://api.dicebear.com/7.x/avataaars/svg?seed={test_user_data['handle']}",
+                            "isVerified": True,
+                            "online": False,
+                            "friends": [user['id']],
+                            "friendRequestsSent": [],
+                            "friendRequestsReceived": [],
+                            "bio": "Test user for demo purposes",
+                            "walletBalance": 1000.0,
+                            "onboardingComplete": True,
+                            "createdAt": datetime.now(timezone.utc).isoformat()
+                        }
+                        await db.users.insert_one(test_user)
+                        logger.info(f"✅ Created test user: {test_user_data['name']}")
+                    else:
+                        if user['id'] not in existing.get('friends', []):
+                            await db.users.update_one(
+                                {"id": test_user_data["id"]},
+                                {"$addToSet": {"friends": user['id']}}
+                            )
+                    
+                    updated_friends.append(test_user_data["id"])
+                
+                if updated_friends:
+                    await db.users.update_one(
+                        {"id": user['id']},
+                        {"$set": {"friends": updated_friends}}
                     )
-                    await db.users.insert_one(test_user.model_dump())
-                    logger.info(f"✅ Created test user: {test_user_data['name']}")
-                else:
-                    # Ensure bidirectional friendship
-                    if user['user_id'] not in existing.get('friends', []):
-                        await db.users.update_one(
-                            {"id": test_user_data["id"]},
-                            {"$addToSet": {"friends": user['user_id']}}
-                        )
-                
-                updated_friends.append(test_user_data["id"])
+                    user['friends'] = updated_friends
+                    logger.info(f"✅ Demo user now has {len(updated_friends)} friends")
             
-            # Update demo user's friends list
-            if updated_friends:
+            # Ensure demo user has sufficient wallet balance
+            if user.get('walletBalance', 0) < 5000:
                 await db.users.update_one(
-                    {"id": user['user_id']},
-                    {"$set": {"friends": updated_friends}}
+                    {"id": user['id']},
+                    {"$set": {"walletBalance": 10000.0}}
                 )
-                mongo_user['friends'] = updated_friends
-                logger.info(f"✅ Demo user now has {len(updated_friends)} friends for testing")
+                user['walletBalance'] = 10000.0
+                logger.info(f"💰 Demo user wallet topped up to ₹10,000")
         
-        # Refresh mongo_user data after updates
-        mongo_user = await db.users.find_one({"id": user['user_id']}, {"_id": 0})
-    
-    # Generate JWT token
-    token = create_access_token(user['user_id'])
-    
-    return {
-        "token": token,
-        "user": {
-            "id": user['user_id'],
-            "handle": mongo_user.get('handle', user['email'].split('@')[0]),
-            "name": user['name'],
-            "email": user['email'],
-            "phone": mongo_user.get('phone', ''),  # Add phone field to login response
-            "avatar": mongo_user.get('avatar', f"https://api.dicebear.com/7.x/avataaars/svg?seed={user['email']}"),
-            "isVerified": mongo_user.get('isVerified', True),
-            "bio": mongo_user.get('bio', ''),
-            "walletBalance": mongo_user.get('walletBalance', 0.0),
-            "friends": mongo_user.get('friends', []),
-            "friendRequestsSent": mongo_user.get('friendRequestsSent', []),
-            "friendRequestsReceived": mongo_user.get('friendRequestsReceived', []),
-            "onboardingComplete": mongo_user.get('onboardingComplete', False)  # Add onboarding status
+        # Generate JWT token
+        token = create_access_token(user['id'])
+        
+        return {
+            "token": token,
+            "user": user
         }
-    }
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Login error: {str(e)}")
+        raise HTTPException(status_code=500, detail="Login failed")
 
 @api_router.get("/auth/me")
 async def get_me(current_user: dict = Depends(get_current_user)):
