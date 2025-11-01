@@ -407,6 +407,7 @@ class ComprehensiveAuthSocialTester:
                 print(f"   Liking post {post_id}...")
                 like_response = self.session.post(
                     f"{BACKEND_URL}/posts/{post_id}/like",
+                    params={"userId": self.demo_user_data.get("id")},
                     headers={
                         "Authorization": f"Bearer {self.demo_auth_token}",
                         "Content-Type": "application/json"
