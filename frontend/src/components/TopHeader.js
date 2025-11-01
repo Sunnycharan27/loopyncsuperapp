@@ -53,6 +53,10 @@ const TopHeader = ({ title, subtitle, showIcons = true }) => {
         </div>
       )}
     </div>
+
+    {/* Voice Bot Modal */}
+    <VoiceBotModal isOpen={showVoiceBot} onClose={() => setShowVoiceBot(false)} />
+  </>
   );
 };
 
