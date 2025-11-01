@@ -240,8 +240,8 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
           )}
         </div>
 
-        {/* Error Display */}
-        {(error || speechError) && (
+        {/* Error Display - Only show if not using text fallback */}
+        {(error || (speechError && !isMobile)) && (
           <div className="px-4 pb-2">
             <div className="bg-red-500/20 border border-red-500/50 rounded-xl p-4">
               <p className="text-red-400 text-sm font-semibold mb-2">
