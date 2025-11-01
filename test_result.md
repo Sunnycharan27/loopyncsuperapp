@@ -7802,6 +7802,69 @@ agent_communication:
       
       The comprehensive testing validates that all priority endpoints mentioned in the review request are working correctly with proper authentication, data validation, and error handling. The backend infrastructure is production-ready for the Loopync social superapp.
 
+  - task: "Calling & UI Color Consistency Fixes"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/MessengerNew.js, /app/frontend/src/App.css"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: false
+        agent: "user"
+        comment: |
+          USER ISSUES REPORTED:
+          - "Failed to initiate call" error when attempting audio/video calls
+          - Inconsistent colors throughout the application
+          - Requested: Apply existing color scheme (dark navy/purple with cyan accents) consistently
+      - working: "NA"
+        agent: "main"
+        comment: |
+          FIXES APPLIED: Calling Error Handling + UI Color Consistency
+          
+          ✅ CALLING FIX (MessengerNew.js):
+          1. Enhanced error handling for call initiation
+          2. Added JWT token authentication headers to API calls
+          3. Added validation checks (user login, conversation selected)
+          4. Added success toast notifications
+          5. Detailed error logging for debugging
+          6. Better user feedback for all call scenarios
+          
+          ✅ UI COLOR CONSISTENCY (MessengerNew.js):
+          Applied existing color scheme throughout messenger:
+          1. Background: linear-gradient(180deg, #0f021e 0%, #1a0b2e 100%)
+          2. Surface colors: rgba(18, 20, 39, 0.5-0.9) with blur effects
+          3. Borders: rgba(0, 224, 255, 0.1-0.3) cyan glow
+          4. Hover states: rgba(0, 224, 255, 0.05-0.1)
+          5. Message bubbles: Cyan gradient for sent, dark surface for received
+          6. Input fields: Dark surface with cyan border and glow effects
+          7. Empty states: Cyan accent with proper transparency
+          
+          COLOR VARIABLES FROM APP.CSS (Already Defined):
+          - --bg-primary: #0f021e (dark purple)
+          - --bg-surface: #121427 (dark navy)
+          - --color-primary: #00E0FF (cyan accent)
+          - --text-primary: #ffffff (white text)
+          - --text-secondary: #b8b8d1 (gray text)
+          - --glass-bg: rgba(18, 20, 39, 0.7) (glassmorphism)
+          - --glass-border: rgba(0, 224, 255, 0.15) (cyan borders)
+          
+          📊 CONSISTENT ELEMENTS NOW:
+          - ✅ Messenger threads list with cyan accents
+          - ✅ Message input with glassmorphism effect
+          - ✅ Chat header with consistent dark surface
+          - ✅ Message bubbles with cyan gradient (sent) / dark surface (received)
+          - ✅ Search bar with cyan border and focus states
+          - ✅ Hover effects with cyan glow transitions
+          - ✅ Empty states with cyan icons and proper styling
+          
+          NEEDS TESTING:
+          - Test call initiation with proper authentication
+          - Verify audio/video call functionality
+          - Test messenger UI across different screen sizes
+          - Verify color consistency throughout app
+          - Test hover/focus states and transitions
+
 metadata:
   test_sequence: 3
   run_ui: false
