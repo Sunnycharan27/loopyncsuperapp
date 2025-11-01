@@ -10453,3 +10453,54 @@ agent_communication:
       ✅ Production-ready state verified
       ✅ Full end-to-end testing completed successfully
 
+  - agent: "main"
+    message: |
+      🚨 CRITICAL AUTHENTICATION FIX APPLIED - MongoDB User Persistence Issue Resolved
+      
+      📋 **USER ISSUE**: 
+      - "Internal server error" on signup page
+      - "Failed to start conversation" error in messenger
+      
+      🔍 **ROOT CAUSE IDENTIFIED**:
+      - DUPLICATE signup endpoints found in server.py (lines 1067 & 1155)
+      - First endpoint used old sheets_db (in-memory, non-persistent)
+      - Second endpoint used new auth_service (MongoDB, persistent)
+      - FastAPI was routing to first endpoint, causing data loss on restart
+      
+      ✅ **FIXES APPLIED**:
+      1. Removed duplicate OLD signup endpoint (lines 1067-1138) using sheets_db
+      2. Kept NEW signup endpoint (lines 1082-1112) using auth_service + MongoDB
+      3. Updated section header to "MONGODB AUTHENTICATION"
+      4. Backend restarted successfully
+      
+      🎯 **TESTING REQUIREMENTS**:
+      Please test the following scenarios comprehensively:
+      
+      **PRIORITY 1: Authentication Endpoints**
+      - Test POST /api/auth/signup with new user (verify MongoDB persistence)
+      - Test POST /api/auth/login with newly created user
+      - Test signup error handling (duplicate email, duplicate handle)
+      - Verify user data persists after server restart
+      
+      **PRIORITY 2: Messenger Functionality**
+      - Test POST /api/messenger/start with friend userId
+      - Test messenger conversation creation end-to-end
+      - Verify messages can be sent successfully
+      
+      **PRIORITY 3: Friend-Based Features**
+      - Test friend search and messaging integration
+      - Verify friend list displays correctly
+      - Test calling features with friends
+      
+      📊 **EXPECTED RESULTS**:
+      - ✅ Signup creates user in MongoDB (not in-memory)
+      - ✅ Login retrieves user from MongoDB
+      - ✅ User data persists across server restarts
+      - ✅ Messenger conversations start successfully
+      - ✅ No "Internal server error" on signup
+      - ✅ No "Failed to start conversation" errors
+      
+      **STATUS**: Backend fix deployed, needs comprehensive backend testing
+  
+  - agent: "testing"
+
