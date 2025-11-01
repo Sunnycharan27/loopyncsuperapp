@@ -23,6 +23,7 @@ from PIL import Image
 
 # Import the Google Sheets database module
 from sheets_db import init_sheets_db
+from messenger_service import MessengerService, SendMessageRequest, AIMessageRequest, UpdateReadStatusRequest
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
