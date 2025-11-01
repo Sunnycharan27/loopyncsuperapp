@@ -211,3 +211,17 @@ input:focus, textarea:focus {
     border-radius: 16px;
   }
 }
+
+/* AI Assistant Button Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce 2s infinite;
+}
