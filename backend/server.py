@@ -7044,6 +7044,68 @@ async def ai_message_suggest(request: AIMessageRequest, userId: str):
         logger.error(f"Error getting AI suggestion: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+@api_router.get("/messenger/friends")
+async def get_friends_for_messaging(userId: str):
+    """Get user's friends list for starting conversations"""
+    try:
+        user = await db.users.find_one({"id": userId}, {"_id": 0})
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        friends = user.get("friends", [])
+        
+        # Get friend details
+        friend_list = []
+        for friend_id in friends:
+            friend = await db.users.find_one({"id": friend_id}, {"_id": 0})
+            if friend:
+                # Check if thread exists
+                participants = sorted([userId, friend_id])
+                thread = await db.threads.find_one({"participants": participants, "type": "direct"})
+                
+                friend_list.append({
+                    "id": friend["id"],
+                    "name": friend.get("name", "Unknown"),
+                    "avatar": friend.get("avatar", ""),
+                    "online": friend.get("online", False),
+                    "hasThread": thread is not None,
+                    "threadId": thread["id"] if thread else None
+                })
+        
+        return {"success": True, "friends": friend_list}
+    except Exception as e:
+        logger.error(f"Error getting friends: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@api_router.post("/messenger/start")
+async def start_conversation(userId: str, friendId: str):
+    """Start a conversation with a friend"""
+    try:
+        # Check friendship
+        are_friends = await messenger_service.check_friendship(userId, friendId)
+        if not are_friends:
+            raise HTTPException(status_code=403, detail="You can only message friends")
+        
+        # Get or create thread
+        thread = await messenger_service.get_or_create_thread(userId, friendId)
+        
+        # Get friend info
+        friend = await db.users.find_one({"id": friendId}, {"_id": 0})
+        if friend:
+            thread["otherUser"] = {
+                "id": friend["id"],
+                "name": friend.get("name", "Unknown"),
+                "avatar": friend.get("avatar", ""),
+                "online": friend.get("online", False)
+            }
+        
+        return {"success": True, "thread": thread}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error starting conversation: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 @api_router.get("/messenger/search")
 async def search_messages(userId: str, query: str, limit: int = 20):
     """Search messages"""
