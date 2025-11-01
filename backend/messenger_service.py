@@ -178,7 +178,7 @@ class MessengerService:
         
         if before:
             # Get messages before a certain message (for pagination)
-            before_message = await self.db.messages.find_one({"id": before})
+            before_message = await self.db.messages.find_one({"id": before}, {"_id": 0})
             if before_message:
                 query["createdAt"] = {"$lt": before_message["createdAt"]}
         
