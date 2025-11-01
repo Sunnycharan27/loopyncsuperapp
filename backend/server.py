@@ -6487,14 +6487,14 @@ async def end_call(callId: str):
 async def get_call_history(userId: str, limit: int = 50):
     """Get call history"""
     calls = await db.calls.find({
-        "$or": [{"callerId": userId}, {"receiverId": userId}]
+        "$or": [{"callerId": userId}, {"recipientId": userId}]
     }, {"_id": 0}).sort("startedAt", -1).limit(limit).to_list(limit)
     
     for call in calls:
         caller = await db.users.find_one({"id": call["callerId"]}, {"_id": 0})
-        receiver = await db.users.find_one({"id": call["receiverId"]}, {"_id": 0})
+        recipient = await db.users.find_one({"id": call["recipientId"]}, {"_id": 0})
         call["caller"] = caller
-        call["receiver"] = receiver
+        call["recipient"] = recipient
     
     return calls
 
