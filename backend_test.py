@@ -32,26 +32,39 @@ TEST_PASSWORD = "password123"
 
 class AgoraCallTestSuite:
     def __init__(self):
+        self.base_url = BASE_URL
         self.session = requests.Session()
         self.auth_token = None
-        self.test_results = []
-        
-    def log_test(self, test_name, success, details, response_data=None):
-        """Log test results"""
-        result = {
-            "test": test_name,
-            "success": success,
-            "details": details,
-            "timestamp": datetime.now().isoformat(),
-            "response_data": response_data
+        self.demo_user_id = None
+        self.friend_user_id = None
+        self.test_call_id = None
+        self.results = {
+            "total_tests": 7,
+            "passed": 0,
+            "failed": 0,
+            "test_details": []
         }
-        self.test_results.append(result)
         
-        status = "✅ PASS" if success else "❌ FAIL"
-        print(f"{status} {test_name}")
-        print(f"   Details: {details}")
-        if response_data:
-            print(f"   Response: {json.dumps(response_data, indent=2)}")
+    def log_test_result(self, test_name, passed, details, error=None):
+        """Log test result"""
+        status = "✅ PASSED" if passed else "❌ FAILED"
+        self.results["test_details"].append({
+            "test": test_name,
+            "status": status,
+            "details": details,
+            "error": error
+        })
+        
+        if passed:
+            self.results["passed"] += 1
+        else:
+            self.results["failed"] += 1
+            
+        print(f"{status}: {test_name}")
+        if details:
+            print(f"   Details: {details}")
+        if error:
+            print(f"   Error: {error}")
         print()
         
     def authenticate(self):
