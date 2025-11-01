@@ -2036,14 +2036,11 @@ async def create_post_comment_alias(postId: str, comment: CommentCreate, authorI
 
 # ===== AI VOICE BOT ENDPOINTS (OpenAI via Emergent LLM Key) =====
 
-from openai import AsyncOpenAI
+from emergentintegrations.llm.openai import LlmChat, UserMessage
 
 # Initialize OpenAI client with Emergent LLM Key
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
-openai_client = AsyncOpenAI(
-    api_key=EMERGENT_LLM_KEY,
-    base_url="https://api.emergent.com/v1"
-) if EMERGENT_LLM_KEY else None
+llm_chat = LlmChat(api_key=EMERGENT_LLM_KEY) if EMERGENT_LLM_KEY else None
 
 class VoiceQueryRequest(BaseModel):
     query: str
@@ -2054,34 +2051,27 @@ class VoiceQueryRequest(BaseModel):
 @api_router.post("/voice/chat")
 async def voice_chat(request: VoiceQueryRequest):
     """Handle voice bot queries using OpenAI via Emergent LLM Key"""
-    if not openai_client:
+    if not llm_chat:
         raise HTTPException(status_code=500, detail="Voice bot not configured")
     
     try:
-        messages = [
-            {
-                "role": "system",
-                "content": "You are a helpful voice assistant for Loopync social media app. Provide concise, natural responses suitable for speech. Keep responses under 100 words."
-            },
-            {
-                "role": "user",
-                "content": request.query
-            }
-        ]
+        system_message = "You are a helpful voice assistant for Loopync social media app. Provide concise, natural responses suitable for speech. Keep responses under 100 words."
         
-        completion = await openai_client.chat.completions.create(
+        user_message = UserMessage(content=request.query)
+        
+        # Use LlmChat from emergentintegrations
+        response = await llm_chat.achat(
+            messages=[user_message],
+            system_message=system_message,
             model="gpt-4o",
-            messages=messages,
             temperature=request.temperature,
             max_tokens=request.max_tokens
         )
         
-        response_text = completion.choices[0].message.content
-        
         return {
             "success": True,
             "data": {
-                "response": response_text,
+                "response": response,
                 "session_id": request.session_id,
                 "model": "gpt-4o"
             }
