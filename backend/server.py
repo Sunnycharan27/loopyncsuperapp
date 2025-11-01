@@ -1028,6 +1028,40 @@ async def webrtc_ice_candidate(sid, data):
     except Exception as e:
         logging.error(f"ICE candidate error: {e}")
 
+@sio.event
+async def typing(sid, data):
+    """Handle typing indicator"""
+    try:
+        thread_id = data.get('threadId')
+        user_id = None
+        
+        # Find sender
+        for uid, client_sid in connected_clients.items():
+            if client_sid == sid:
+                user_id = uid
+                break
+        
+        if not user_id or not thread_id:
+            return
+        
+        # Get thread to find recipient
+        thread = await db.threads.find_one({"id": thread_id})
+        if not thread:
+            return
+        
+        # Get other participant
+        recipient_id = [p for p in thread["participants"] if p != user_id][0]
+        
+        # Emit typing event to recipient
+        await emit_to_user(recipient_id, 'user_typing', {
+            'threadId': thread_id,
+            'userId': user_id,
+            'typing': data.get('typing', True)
+        })
+        
+    except Exception as e:
+        logging.error(f"Typing indicator error: {e}")
+
 # ===== AUTH ROUTES (REAL AUTHENTICATION WITH GOOGLE SHEETS) =====
 
 @api_router.post("/auth/signup", response_model=dict)
