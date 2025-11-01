@@ -139,8 +139,17 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
     setMessages([]);
     setError(null);
     resetTranscript();
+    setTextInput('');
     if (isSpeaking) stopSpeaking();
   }, [resetTranscript, isSpeaking, stopSpeaking]);
+
+  const handleTextSubmit = useCallback((e) => {
+    e?.preventDefault();
+    if (textInput.trim()) {
+      sendQuery(textInput);
+      setTextInput('');
+    }
+  }, [textInput, sendQuery]);
 
   if (!isOpen) return null;
 
