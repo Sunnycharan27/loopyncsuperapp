@@ -13,6 +13,8 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
   const [sessionId] = useState(() => 
     `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
   );
+  const [textInput, setTextInput] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
 
   const {
     transcript,
@@ -29,6 +31,16 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
     speak,
     stop: stopSpeaking
   } = useTextToSpeech();
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const mobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+      setIsMobile(mobile);
+    };
+    checkMobile();
+  }, []);
 
   const sendQuery = useCallback(async (query) => {
     if (!query.trim()) return;
