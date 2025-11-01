@@ -112,6 +112,9 @@ class MessengerService:
         
         await self.db.messages.insert_one(message)
         
+        # Remove MongoDB _id field for JSON serialization
+        message.pop('_id', None)
+        
         # Update thread last message
         await self.db.threads.update_one(
             {"id": thread["id"]},
