@@ -670,13 +670,14 @@ const MessengerNew = () => {
           </form>
         </div>
       ) : (
-        <div className="hidden md:flex flex-1 items-center justify-center text-gray-500">
+        <div className="hidden md:flex flex-1 items-center justify-center">
           <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-gray-800 flex items-center justify-center">
-              <Send size={40} className="text-gray-700" />
+            <div className="w-24 h-24 mx-auto mb-4 rounded-full flex items-center justify-center" 
+                 style={{ background: 'rgba(0, 224, 255, 0.1)', border: '2px solid rgba(0, 224, 255, 0.3)' }}>
+              <Send size={40} className="text-cyan-400" />
             </div>
-            <h2 className="text-2xl font-bold mb-2">Your Messages</h2>
-            <p>Send private messages to your friends</p>
+            <h2 className="text-2xl font-bold mb-2 text-white">Your Messages</h2>
+            <p className="text-gray-400">Send private messages to your friends</p>
           </div>
         </div>
       )}
