@@ -67,6 +67,19 @@ const TopHeader = ({ title, subtitle, showIcons = true }) => {
       )}
     </div>
 
+    {/* Floating AI Assistant Button for Mobile */}
+    {isMobile && (
+      <button
+        onClick={() => setShowVoiceBot(true)}
+        className="fixed bottom-20 right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-400 to-blue-500 text-black shadow-2xl shadow-cyan-400/50 hover:scale-110 transition-all active:scale-95"
+        style={{ animation: 'bounce 2s infinite' }}
+        aria-label="Open AI Assistant"
+      >
+        <Mic size={24} className="drop-shadow-lg" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-gray-800 animate-pulse"></span>
+      </button>
+    )}
+
     {/* Voice Bot Modal */}
     <VoiceBotModal isOpen={showVoiceBot} onClose={() => setShowVoiceBot(false)} />
   </>
