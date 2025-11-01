@@ -646,7 +646,8 @@ const MessengerNew = () => {
                 placeholder="Message..."
                 value={messageText}
                 onChange={handleTyping}
-                className="flex-1 px-4 py-2 bg-gray-900 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                className="flex-1 px-4 py-2 text-white rounded-full focus:outline-none focus:ring-2 focus:ring-cyan-400 transition-all"
+                style={{ background: 'rgba(18, 20, 39, 0.8)', border: '1px solid rgba(0, 224, 255, 0.15)' }}
               />
 
               {messageText.trim() ? (
