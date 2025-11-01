@@ -106,7 +106,7 @@ class AgoraCallTestSuite:
         try:
             # Check if AGORA_APP_ID and AGORA_APP_CERTIFICATE are configured
             # We'll test this by trying to generate a token via the agora endpoint
-            response = self.session.post(f"{self.base_url}/agora/token", json={
+            response = self.session.post(f"{self.base_url}/agora/token", params={
                 "channelName": "test-channel",
                 "uid": 12345,
                 "role": "publisher"
