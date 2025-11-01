@@ -10820,3 +10820,67 @@ agent_communication:
       **ROOT CAUSE RESOLUTION CONFIRMED**: The duplicate signup endpoint has been completely resolved. Users are now properly created in MongoDB and persist across server restarts. All authentication and messenger functionality is working perfectly.
       
       **RECOMMENDATION**: The MongoDB authentication fix is 100% successful and production-ready. All critical user issues have been resolved. The main agent should summarize and finish this task.
+
+  - agent: "main"
+    message: |
+      🎯 COMPREHENSIVE AUDIO/VIDEO CALLING TESTING PLANNED - End-to-End Verification Required
+      
+      📋 **USER REQUEST**: 
+      - Conduct comprehensive end-to-end testing of audio/video calling functionality
+      - Test caller flow (initiate call → outgoing UI → connected state)
+      - Test recipient flow (incoming notification → accept/decline UI → connected state)
+      - Verify both audio and video calls work properly
+      - Ensure Agora.io integration is functioning correctly
+      
+      🔧 **RECENT FIXES APPLIED** (Need Verification):
+      1. ✅ Fixed duplicate signup endpoint (MongoDB persistence)
+      2. ✅ Fixed call initiation error handling (MessengerNew.js)
+      3. ✅ Refactored /api/calls/initiate endpoint (Pydantic Request model)
+      4. ✅ Implemented outgoing_call CustomEvent for caller UI display
+      5. ✅ Fixed Agora UID generation (deterministic logic to prevent UID_CONFLICT)
+      
+      📊 **TESTING REQUIREMENTS FOR BACKEND**:
+      
+      **PRIORITY 1: Call Initiation Backend**
+      - Test POST /api/calls/initiate with valid friend relationship
+      - Verify Agora token generation is working
+      - Verify channel name creation
+      - Test deterministic UID generation (no UID conflicts)
+      - Verify call record creation in database
+      - Test error handling for non-friends
+      
+      **PRIORITY 2: Call Management Backend**
+      - Test call answer functionality
+      - Test call rejection functionality  
+      - Test call end functionality
+      - Verify call status updates in database
+      - Test call history retrieval
+      
+      **PRIORITY 3: Agora Integration Backend**
+      - Verify Agora App ID and Certificate are configured
+      - Test token generation with correct privileges
+      - Verify UID generation is deterministic and unique per user
+      - Test channel management
+      
+      **TEST SCENARIO**:
+      1. User A (demo@loopync.com) initiates call to User B (friend)
+      2. Backend generates Agora tokens for both users
+      3. Call record created in database with status "initiated"
+      4. WebSocket event emitted to recipient
+      5. Recipient receives incoming_call event
+      6. Test both accept and reject scenarios
+      7. Verify call status updates correctly
+      
+      📝 **EXPECTED RESULTS**:
+      - ✅ Call initiation returns proper tokens and channel info
+      - ✅ No UID_CONFLICT errors (deterministic UID generation working)
+      - ✅ Call records persist in database
+      - ✅ Friend validation prevents calls to non-friends
+      - ✅ WebSocket events fire correctly for incoming calls
+      - ✅ Call status updates work (initiated → answered/rejected → ended)
+      
+      **NEEDS_RETESTING**: true
+      **PRIORITY**: critical
+      **STATUS**: Ready for comprehensive backend testing
+      
+      Please test all calling backend endpoints comprehensively and report any issues found.
