@@ -401,7 +401,9 @@ class AgoraCallTestSuite:
         
         try:
             # Answer the call
-            response = self.session.post(f"{self.base_url}/calls/{self.test_call_id}/answer")
+            response = self.session.post(f"{self.base_url}/calls/{self.test_call_id}/answer", params={
+                "userId": self.friend_user_id  # Use recipient ID for answering
+            })
             
             if response.status_code == 200:
                 call_data = response.json()
