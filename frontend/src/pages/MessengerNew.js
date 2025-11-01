@@ -32,7 +32,7 @@ const MessengerNew = () => {
 
   // Get current user
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const user = JSON.parse(localStorage.getItem('loopync_user') || '{}');
     if (!user.id) {
       navigate('/auth');
       return;
