@@ -34,7 +34,7 @@ const VoiceBotModal = ({ isOpen, onClose }) => {
     if (transcript && !isListening) {
       sendQuery(transcript);
     }
-  }, [transcript, isListening]);
+  }, [transcript, isListening, sendQuery]);
 
   const sendQuery = useCallback(async (query) => {
     if (!query.trim()) return;
