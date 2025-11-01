@@ -516,7 +516,13 @@ class AuthMessengerTestSuite:
             )
             
             if response.status_code == 200:
-                threads = response.json()
+                response_data = response.json()
+                
+                # Handle wrapped response format
+                if isinstance(response_data, dict) and "threads" in response_data:
+                    threads = response_data["threads"]
+                else:
+                    threads = response_data
                 
                 if isinstance(threads, list):
                     if len(threads) > 0:
