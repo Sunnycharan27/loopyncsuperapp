@@ -221,7 +221,7 @@ const ComposerModal = ({ currentUser, onClose, onPostCreated }) => {
                 data-testid="composer-file-btn"
               >
                 <Upload size={18} />
-                {selectedFile ? "Change Photo" : "Upload from Device"}
+                {selectedFile ? "Change Media" : "Upload Photo/Video"}
               </button>
               
               {CLOUDINARY_CLOUD && (
