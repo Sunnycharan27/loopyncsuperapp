@@ -29,32 +29,9 @@ const VibeZone = () => {
   };
 
   const handleReelCreated = (newReel) => {
-    // Normalize URLs - backend returns /api/uploads/filename
-    const normalize = (url) => {
-      if (!url) return url;
-      
-      // If URL starts with /api/uploads, prepend base URL
-      if (url.startsWith('/api/uploads')) {
-        const baseUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-        return `${baseUrl}${url}`;
-      }
-      
-      // If URL starts with /uploads (old format), add /api prefix
-      if (url.startsWith('/uploads')) {
-        const baseUrl = import.meta.env.REACT_APP_BACKEND_URL || process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-        return `${baseUrl}/api${url}`;
-      }
-      
-      // Return as-is for absolute URLs
-      return url;
-    };
-    
-    const hydrated = {
-      ...newReel,
-      videoUrl: normalize(newReel.videoUrl),
-      thumb: normalize(newReel.thumb),
-    };
-    setReels([hydrated, ...reels]);
+    // Backend now returns full absolute URLs from database
+    // No normalization needed - just add the reel to the feed
+    setReels([newReel, ...reels]);
     setShowComposer(false);
   };
 
