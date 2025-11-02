@@ -18,6 +18,9 @@ const VibeCapsuleViewer = ({ stories, currentUserId, onClose }) => {
   useEffect(() => {
     if (!currentCapsule || isPaused) return;
 
+    // Reset media error state when changing capsules
+    setMediaError(false);
+
     // Mark as viewed
     markAsViewed();
 
