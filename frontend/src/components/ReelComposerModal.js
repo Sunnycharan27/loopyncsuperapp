@@ -74,14 +74,27 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
     formData.append("file", selectedFile);
 
     try {
+      console.log('Uploading video file:', selectedFile.name, 'Size:', (selectedFile.size / 1024 / 1024).toFixed(2), 'MB');
+      
       const res = await axios.post(`${API}/upload`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
+        timeout: 120000 // 2 minute timeout for large videos
       });
+      
+      console.log('Upload response:', res.data);
+      
       // Backend returns /api/uploads/filename, just use it directly
       // since it already includes the full path
+      if (!res.data?.url) {
+        throw new Error('Upload response missing URL');
+      }
+      
+      toast.success("Video uploaded successfully!");
       return res.data.url;
     } catch (error) {
-      toast.error("Failed to upload video");
+      console.error('Upload error:', error);
+      const errorMessage = error.response?.data?.detail || error.message || "Upload failed";
+      toast.error(`Failed to upload video: ${errorMessage}`);
       return null;
     } finally {
       setUploading(false);
