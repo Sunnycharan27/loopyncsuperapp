@@ -88,6 +88,20 @@ const VibeCapsuleViewer = ({ stories, currentUserId, onClose }) => {
     }
   };
 
+  const getMediaUrl = (url) => {
+    // If URL starts with /uploads or /api/uploads, prepend backend URL
+    if (url?.startsWith('/uploads') || url?.startsWith('/api/uploads')) {
+      return `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001'}${url.startsWith('/api') ? url : `/api${url}`}`;
+    }
+    // Return as-is for absolute URLs (external images)
+    return url;
+  };
+
+  const handleMediaError = () => {
+    console.error("Failed to load media:", currentCapsule.mediaUrl);
+    setMediaError(true);
+  };
+
   if (!currentStory || !currentCapsule) return null;
 
   // Render using portal to ensure it's on top of everything
