@@ -58,12 +58,34 @@ const ReelViewer = ({ reels, currentUser, onLike }) => {
   }, [currentIndex, validReels.length]);
 
   const handleVideoError = (reelId, event) => {
-    console.error(`Video failed to load for reel: ${reelId}`, event);
-    // Don't mark as error immediately - videos might just be slow to load
-    // Only mark as error after multiple failures
-    setTimeout(() => {
-      setVideoErrors(prev => ({ ...prev, [reelId]: true }));
-    }, 2000);
+    const errorCount = (videoErrors[reelId] || 0) + 1;
+    console.warn(`Video load attempt ${errorCount} failed for reel: ${reelId}`);
+    
+    // Only mark as error after 3 attempts
+    if (errorCount < 3) {
+      setTimeout(() => {
+        setVideoErrors(prev => ({ ...prev, [reelId]: errorCount }));
+        // Try to reload the video
+        const videoElement = videoRefs.current.find(v => v && v.getAttribute('data-reel-id') === reelId);
+        if (videoElement) {
+          videoElement.load();
+        }
+      }, 1000);
+    } else {
+      setVideoErrors(prev => ({ ...prev, [reelId]: errorCount }));
+    }
+  };
+
+  const handleVideoCanPlay = (reelId) => {
+    // Video successfully loaded, reset error count
+    if (videoErrors[reelId]) {
+      console.log(`Video recovered for reel: ${reelId}`);
+      setVideoErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[reelId];
+        return newErrors;
+      });
+    }
   };
 
   if (validReels.length === 0) {
