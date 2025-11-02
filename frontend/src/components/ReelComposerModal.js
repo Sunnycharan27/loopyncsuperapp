@@ -77,7 +77,9 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
       const res = await axios.post(`${API}/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
-      return `${API}${res.data.url}`;
+      // Backend returns /api/uploads/filename, just use it directly
+      // since it already includes the full path
+      return res.data.url;
     } catch (error) {
       toast.error("Failed to upload video");
       return null;
