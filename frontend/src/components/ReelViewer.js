@@ -150,12 +150,19 @@ const ReelViewer = ({ reels, currentUser, onLike }) => {
   const getVideoSource = (reel) => {
     let videoUrl = reel.videoUrl;
     
-    // If it's a relative path, prepend the API base
+    // If it's a relative path starting with /uploads or /api/uploads
     if (videoUrl?.startsWith('/uploads')) {
       return `${API}${videoUrl}`;
     }
     
-    // Return as-is for external URLs
+    if (videoUrl?.startsWith('/api/uploads')) {
+      // Backend returns /api/uploads/filename
+      // API already includes base URL, so prepend base URL without /api
+      const baseUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      return `${baseUrl}${videoUrl}`;
+    }
+    
+    // Return as-is for external URLs (http/https)
     return videoUrl;
   };
 
