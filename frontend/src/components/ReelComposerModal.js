@@ -96,6 +96,11 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
       return;
     }
 
+    if (!currentUser || !currentUser.id) {
+      toast.error("Please login to create reels");
+      return;
+    }
+
     setLoading(true);
     try {
       let uploadedVideoUrl = videoUrl;
@@ -103,9 +108,19 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
       // Upload file if selected
       if (selectedFile) {
         const url = await handleUpload();
-        if (url) {
-          uploadedVideoUrl = url;
+        if (!url) {
+          toast.error("Video upload failed. Please try again.");
+          setLoading(false);
+          return;
         }
+        uploadedVideoUrl = url;
+      }
+
+      // Validate video URL
+      if (!uploadedVideoUrl || uploadedVideoUrl.trim() === '') {
+        toast.error("Video URL is missing. Please upload a video.");
+        setLoading(false);
+        return;
       }
 
       // Add music info to caption if selected
@@ -116,6 +131,13 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
         finalCaption = `${caption}\n\n🎵 Custom Audio: ${audioFile.name}`.trim();
       }
 
+      console.log('Creating reel with:', {
+        authorId: currentUser.id,
+        videoUrl: uploadedVideoUrl,
+        thumb: thumb || uploadedVideoUrl,
+        caption: finalCaption
+      });
+
       const res = await axios.post(`${API}/reels?authorId=${currentUser.id}`, {
         videoUrl: uploadedVideoUrl,
         thumb: thumb || uploadedVideoUrl,
@@ -124,8 +146,11 @@ const ReelComposerModal = ({ currentUser, onClose, onReelCreated }) => {
       
       toast.success("Reel created successfully! 🎉");
       onReelCreated(res.data);
+      onClose();
     } catch (error) {
-      toast.error("Failed to create reel");
+      console.error('Reel creation error:', error);
+      const errorMessage = error.response?.data?.detail || error.message || "Failed to create reel";
+      toast.error(`Failed to create reel: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
