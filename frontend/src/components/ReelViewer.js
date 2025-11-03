@@ -158,7 +158,11 @@ const ReelViewer = ({ reels, currentUser, onLike }) => {
     if (videoUrl?.startsWith('/api/uploads')) {
       // Backend returns /api/uploads/filename
       // API already includes base URL, so prepend base URL without /api
-      const baseUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+      const baseUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      if (!baseUrl) {
+        console.error('REACT_APP_BACKEND_URL is not configured');
+        return videoUrl;
+      }
       return `${baseUrl}${videoUrl}`;
     }
     
