@@ -4064,7 +4064,7 @@ async def create_order(order: OrderCreate, userId: str):
                 "email": False
             },
             "reminder_enable": False,
-            "callback_url": f"{os.environ.get('FRONTEND_URL', 'http://localhost:3000')}/order-success",
+            "callback_url": f"{os.environ.get('FRONTEND_URL')}/order-success",
             "callback_method": "get"
         }
         
