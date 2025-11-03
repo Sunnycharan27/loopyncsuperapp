@@ -14,7 +14,7 @@ from datetime import datetime
 from PIL import Image
 
 # Configuration
-BACKEND_URL = "https://messenger-revamp.preview.emergentagent.com/api"
+BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
 DEMO_EMAIL = "demo@loopync.com"
 DEMO_PASSWORD = "password123"
 

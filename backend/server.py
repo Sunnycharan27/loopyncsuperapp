@@ -3871,7 +3871,7 @@ async def upload_file(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
     
     # Get base URL from environment or use default
-    base_url = os.environ.get('FRONTEND_URL', 'https://messenger-revamp.preview.emergentagent.com')
+    base_url = os.environ.get('FRONTEND_URL', 'https://media-fix-8.preview.emergentagent.com')
     
     # Return FULL absolute URL for immediate use
     file_url = f"{base_url}/api/uploads/{unique_filename}"

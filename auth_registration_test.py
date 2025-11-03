@@ -18,7 +18,7 @@ from datetime import datetime
 import time
 
 # Configuration
-BACKEND_URL = "https://messenger-revamp.preview.emergentagent.com/api"
+BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
 
 class AuthRegistrationTester:
     def __init__(self):

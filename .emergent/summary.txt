@@ -1,11 +1,9 @@
 <analysis>
-The AI engineer's initial focus was on resolving a critical Failed to start conversation bug. This was identified as a backend authentication issue caused by duplicate signup endpoints in , one using an outdated  and the other a MongoDB-based . The  dependent endpoint was removed, ensuring consistent user persistence via MongoDB.
-
-Subsequently, the engineer addressed user feedback regarding call initiation problems and UI/UX colors. The application's color scheme was unified across the frontend, particularly in , using the existing cyan/blue palette. Call initiation issues were resolved in stages: first by fixing a frontend error handling bug in  that caused toast errors, then by refactoring the backend's  endpoint in  to correctly process call requests using a Pydantic model. Finally, the problem of missing call UI for the caller and recipient was fixed by implementing a custom  event in  that triggers  to display the call modal. The last identified bug, an AgoraRTCError UID_CONFLICT, was tackled by implementing a deterministic UID generation logic in . The trajectory ends with the engineer preparing for comprehensive end-to-end testing of the calling functionality.
+The previous AI engineer initially focused on deployment readiness and comprehensive testing of the audio/video calling functionality, which passed all backend tests. The main bulk of the work then shifted to critical media visibility issues across Vibe Capsules (stories), Reels, and Posts. Recurring problems included outdated/broken media URLs in the database (from old deployments, relative paths, or  constructs), aggressive frontend video error handling leading to  and , and inconsistent media rendering in various frontend components. The engineer systematically cleaned up invalid database entries, fixed URL construction logic in both frontend components (, , ) and the backend's  endpoint ( now returns full URLs). Error handling was improved in  and . The final stage of the trajectory involves debugging a persistent media display issue in posts, with the engineer having confirmed correct API responses and preparing to trace frontend rendering with debug logs.
 </analysis>
 
 <product_requirements>
-Loopync is envisioned as a Superapp integrating social, e-commerce, communication, and fintech features. The key development objectives during this phase included establishing robust authentication with permanent user accounts via MongoDB migration (replacing Google Sheets), implementing secure login/signup, and password hashing. A major focus was on advanced communication, involving a comprehensive friend graph, 1:1 text/image/voice messaging, and transitioning to Agora.io for audio/video calls with features like presence, read receipts, and push notifications. The entire messenger and calling system were to be rebuilt in an Instagram-like style. Other objectives included dynamic content sharing through Vibe Capsules, enhanced user profiles, location-based services, API stability, expanded social media features (excluding VibeRooms), and integration of an AI voice bot using Emergent LLM Key. The overarching goal was to deliver a fully functional and real-time working perfectly working app with a consistent UI/UX. The implementation done so far includes the rebuild of the messenger and calling system with friend integration, though authentication persistence and calling UI issues were recently addressed.
+Loopync is conceived as a Superapp encompassing social media, e-commerce, communication, and fintech functionalities. The primary development goals included establishing robust, persistent user authentication via MongoDB (replacing Google Sheets), implementing secure login/signup, and password hashing. A major emphasis was on advanced communication, requiring a comprehensive friend graph, 1:1 text/image/voice messaging, and transitioning to Agora.io for audio/video calls, complete with features like presence, read receipts, and push notifications. The entire messenger and calling system was to be rebuilt in an Instagram-like style. Other objectives included dynamic Vibe Capsules for content sharing, enhanced user profiles, location-based services, API stability, expanded social media features, and integration of an AI voice bot using an Emergent LLM Key. The overarching aim was to deliver a fully functional and real-time working perfectly working app with a consistent UI/UX. To date, the messenger and calling system have been rebuilt, with recent fixes addressing authentication persistence, call initiation, UI, and various media visibility issues across posts, reels, and stories.
 </product_requirements>
 
 <key_technical_concepts>
@@ -21,18 +19,42 @@ Loopync is envisioned as a Superapp integrating social, e-commerce, communicatio
 The application utilizes a React frontend and a FastAPI backend, communicating via REST APIs and WebSockets (Socket.IO), with MongoDB as the primary database.
 
 
--   ****: Main backend logic.
-    -   **Changes**: Removed duplicate signup endpoint relying on , keeping only the  (MongoDB) one. Refactored  endpoint to use a Pydantic  model instead of direct parameters. Corrected UID generation for Agora calls to be deterministic.
--   ** (NEW)**: Handles user authentication with MongoDB.
-    -   **Changes**: Used by  for all user signup and login.
--   ** (NEW)**: The newly built Instagram-style messenger interface.
-    -   **Changes**: Fixed call initiation error handling to properly extract string messages from backend responses. Implemented  dispatch for  upon call initiation to trigger . Applied consistent cyan/blue color scheme throughout the component, replacing ,  classes.
--   ****: Centralized component for managing call states.
-    -   **Changes**: Updated to listen for   dispatched from  to display the outgoing call modal, ensuring caller UI is shown.
--   ****: Handles active audio/video calls using Agora.io.
-    -   **Changes**: Verified to be correctly using call tokens and UIDs.
--   ****: Displays UI for incoming calls.
-    -   **Changes**: Verified to be correctly passing data to .
+-   ****: Main backend logic and API endpoints.
+    -   **Importance**: Handles authentication, posts, reels, vibe capsules, calls, and file uploads.
+    -   **Changes**: Removed duplicate signup endpoint, refactored , fixed Agora UID generation. Modified  to return full absolute URLs. Public endpoints for posts, reels, and capsules were confirmed to have no friend filtering.
+-   ****: Dedicated service for user authentication.
+    -   **Importance**: Ensures secure and persistent user management via MongoDB.
+    -   **Changes**: Used by  for user signups/logins.
+-   ****: Frontend messenger interface.
+    -   **Importance**: Core component for 1:1 messaging and call initiation.
+    -   **Changes**: Improved call initiation error handling and dispatched  for . Unified color scheme.
+-   ****: Manages call UI states.
+    -   **Importance**: Central control for showing incoming/outgoing call modals.
+    -   **Changes**: Listens for  events to display the appropriate call UI.
+-   ****: Displays Vibe Capsule stories.
+    -   **Importance**: Renders story content, including media.
+    -   **Changes**: Added a helper function to construct correct media URLs and implemented error handling with a placeholder for broken or external media.
+-   ****: Handles Vibe Capsule uploads.
+    -   **Importance**: Manages media file selection and submission for stories.
+    -   **Changes**: Corrected URL construction for uploaded media to prevent  issues.
+-   ****: Modal for creating and uploading reels.
+    -   **Importance**: Allows users to select video files, add captions, and upload them as reels.
+    -   **Changes**: Fixed URL construction for uploaded video ( issue). Enhanced error handling to display detailed error messages.
+-   ****: Page dedicated to viewing reels.
+    -   **Importance**: Fetches and renders the list of reels, integrating with the reel creation modal.
+    -   **Changes**: Addressed and removed incorrect URL normalization logic in  that caused  errors.
+-   ****: Displays individual reels for playback.
+    -   **Importance**: Manages video playback, navigation between reels, and error states.
+    -   **Changes**: Removed  attribute from video elements to mitigate CORS issues. Implemented retry logic and  handler to recover from video loading failures. Updated  to correctly handle  paths.
+-   ****: Main homepage displaying user posts.
+    -   **Importance**: Central feed for user-generated content (posts).
+    -   **Changes**: Added debug logging to  to aid in diagnosing persistent media visibility issues.
+-   ****: Renders individual posts in the feed.
+    -   **Importance**: Responsible for displaying post text, media (images/videos), and interactive elements.
+    -   **Changes**: Simplified media rendering logic and introduced debug logging to pinpoint why media might not be displaying.
+-   ****: Utility functions for media URL handling.
+    -   **Importance**: Provides helper functions to validate and process media URLs.
+    -   **Changes**: The logic within , , and  was examined and confirmed to be correct for its purpose.
 </code_architecture>
 
 <pending_tasks>
@@ -47,19 +69,9 @@ The application utilizes a React frontend and a FastAPI backend, communicating v
 </pending_tasks>
 
 <current_work>
-The AI engineer's immediate focus has been on refining the Instagram-style messenger and calling system. This began with fixing a critical backend bug where user accounts were not persistently saved to MongoDB due to a duplicate signup endpoint in  using an old . The redundant endpoint was removed, ensuring all user signups utilize the MongoDB-based , thereby resolving Failed to start conversation errors and user persistence issues. This fix was verified through backend tests.
-
-Following this, the engineer addressed user reports concerning call initiation and UI/UX inconsistencies. The application's color scheme was standardized to a consistent cyan/blue palette across the frontend, with specific attention to  to replace  and  classes.
-
-For the calling functionality, several issues were tackled:
-1.  **Error Handling**: A frontend bug in  causing generic toast errors during call initiation was fixed by robustly extracting string details from backend error responses.
-2.  **Backend Call Initiation**: The  endpoint in  was refactored to correctly accept call parameters using a Pydantic  model.
-3.  **Missing Call UI**: Initially, calls would initiate but the caller wouldn't see an outgoing call UI, and the recipient wouldn't get an incoming call notification. This was resolved by implementing a  () in  upon successful call initiation, which  now listens to, triggering the outgoing call modal. WebSocket  emits were verified as correct.
-4.  **UID Conflict**: The most recent issue, AgoraRTCError UID_CONFLICT, indicated problems with Agora UID generation. This was addressed by modifying the UID generation logic in  to be deterministic, moving away from potentially problematic  function.
-
-The current state is that the calling functionality has been significantly improved through these fixes, with the last fix being the deterministic UID generation. The engineer is now preparing for a comprehensive end-to-end test of the audio and video call features to ensure they are fully functional for both caller and recipient, including the display of accept/decline interfaces.
+The AI engineer's immediate focus is resolving a persistent issue where uploaded post media is not consistently visible in the timeline (), despite the backend API () returning correct, full absolute media URLs. Previous efforts addressed similar media visibility problems in Vibe Capsules and Reels, including database cleanup of invalid/old URLs, fixing  URL construction errors in  and , and updating the backend's  endpoint in  to consistently return full absolute URLs. An  error in  was also fixed by removing unnecessary URL normalization. The engineer has verified that the API is indeed returning media URLs correctly for posts. The current belief is that the issue lies in the frontend rendering layer, specifically within the  component, or a data flow problem that prevents the media from being displayed. The last action taken was simplifying the media rendering logic in  and adding debug logging to  to trace the data flow and diagnose the exact rendering failure.
 </current_work>
 
 <optional_next_step>
-Conduct a comprehensive end-to-end test for the audio and video call functionality.
+Restart the frontend and take a screenshot with console logs to debug the media rendering issue in  for posts.
 </optional_next_step>

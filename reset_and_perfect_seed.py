@@ -15,7 +15,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-BACKEND_URL = "https://messenger-revamp.preview.emergentagent.com/api"
+BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
 
 print("=" * 80)
 print("🚀 COMPLETE DATABASE RESET - INVESTOR DEMO READY")

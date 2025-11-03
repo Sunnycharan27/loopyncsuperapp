@@ -12,7 +12,7 @@ CRITICAL CALL FUNCTIONALITY TESTING - Audio & Video Call Initiation Fix Verifica
 1. Backend: Changed call initiation endpoint to use Pydantic model (CallInitiateRequest)
 2. Frontend: Enhanced error handling to properly extract error messages as strings
 
-**BACKEND URL**: https://messenger-revamp.preview.emergentagent.com/api
+**BACKEND URL**: https://media-fix-8.preview.emergentagent.com/api
 **TEST CREDENTIALS**: demo@loopync.com / password123
 """
 
@@ -22,7 +22,7 @@ import sys
 from datetime import datetime
 
 # Configuration
-BASE_URL = "https://messenger-revamp.preview.emergentagent.com/api"
+BASE_URL = "https://media-fix-8.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
