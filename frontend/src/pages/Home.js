@@ -28,21 +28,6 @@ const Home = () => {
   const fetchPosts = async () => {
     try {
       const res = await axios.get(`${API}/posts`);
-      const posts = res.data;
-      
-      // Debug logging
-      console.log('=== POSTS FETCHED ===');
-      console.log('Total posts:', posts.length);
-      const postsWithMedia = posts.filter(p => p.media && p.media.trim() !== '');
-      console.log('Posts with media:', postsWithMedia.length);
-      postsWithMedia.slice(0, 3).forEach((p, i) => {
-        console.log(`Post ${i + 1}:`, {
-          id: p.id?.substring(0, 8),
-          text: p.text?.substring(0, 30),
-          media: p.media?.substring(0, 80)
-        });
-      });
-      
       setPosts(res.data);
     } catch (error) {
       toast.error("Failed to load posts");
