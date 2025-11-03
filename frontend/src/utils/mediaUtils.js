@@ -2,7 +2,10 @@
  * Utility functions for handling media URLs across the application
  */
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+if (!BACKEND_URL) {
+  console.error('REACT_APP_BACKEND_URL is not configured');
+}
 
 /**
  * Converts a media URL to a full accessible URL
