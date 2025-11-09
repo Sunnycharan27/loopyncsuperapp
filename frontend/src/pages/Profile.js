@@ -717,16 +717,16 @@ const SettingsModal = ({ currentUser, onClose, onSave }) => {
           <button
             onClick={onClose}
             className="flex-1 py-3 rounded-full border-2 border-gray-600 text-gray-300 font-semibold hover:bg-gray-800/50"
-            disabled={saving}
+            disabled={saving || uploading}
           >
             Cancel
           </button>
           <button
             onClick={handleSave}
-            disabled={saving}
+            disabled={saving || uploading}
             className="flex-1 py-3 rounded-full text-white font-semibold bg-gradient-to-r from-cyan-400 to-purple-500 hover:opacity-90 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save Changes"}
+            {uploading ? "Uploading..." : saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </div>
