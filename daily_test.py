@@ -10,7 +10,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BACKEND_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 DEMO_USER_ID = "demo_user"
 TEST_ROOM_NAME = "Test Audio Room"
 

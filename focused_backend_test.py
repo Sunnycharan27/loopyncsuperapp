@@ -11,7 +11,7 @@ import sys
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BACKEND_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 

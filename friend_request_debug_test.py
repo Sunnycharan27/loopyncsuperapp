@@ -20,7 +20,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BACKEND_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 USER1_EMAIL = "demo@loopync.com"
 USER1_PASSWORD = "password123"
 

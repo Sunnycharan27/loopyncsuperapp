@@ -7,7 +7,7 @@ import requests
 import json
 from datetime import datetime
 
-BASE_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BASE_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 

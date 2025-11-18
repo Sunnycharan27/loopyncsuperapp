@@ -15,7 +15,7 @@ Test Requirements from Review Request:
 9. Reels (VibeZone) - Get reels feed
 10. AI Voice Bot - Send voice query and verify AI response
 
-Backend URL: https://media-fix-8.preview.emergentagent.com/api
+Backend URL: https://profile-avatar-2.preview.emergentagent.com/api
 Demo Credentials: demo@loopync.com / password123
 """
 
@@ -27,7 +27,7 @@ import uuid
 from datetime import datetime
 
 # Configuration
-BACKEND_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BACKEND_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 DEMO_EMAIL = "demo@loopync.com"
 DEMO_PASSWORD = "password123"
 

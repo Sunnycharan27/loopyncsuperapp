@@ -13,7 +13,7 @@ CRITICAL AUTHENTICATION & MESSENGER TESTING - MongoDB User Persistence Fix Verif
 - Now using MongoDB-based authentication via auth_service
 - Users should now persist across server restarts
 
-**BACKEND URL**: https://media-fix-8.preview.emergentagent.com/api
+**BACKEND URL**: https://profile-avatar-2.preview.emergentagent.com/api
 **TEST CREDENTIALS**: demo@loopync.com / password123
 
 **PRIORITY 1: Authentication Endpoints (CRITICAL)**
@@ -32,7 +32,7 @@ import random
 import string
 
 # Configuration
-BASE_URL = "https://media-fix-8.preview.emergentagent.com/api"
+BASE_URL = "https://profile-avatar-2.preview.emergentagent.com/api"
 TEST_EMAIL = "demo@loopync.com"
 TEST_PASSWORD = "password123"
 
